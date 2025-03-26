@@ -80,7 +80,7 @@ const ImageUpload = ({
         fileName="test-upload.png"
       />
       <button
-        className="flex flex-col gap-2 items-center justify-center w-full h-14 bg-dark-300 text-light-100 rounded-md"
+        className="upload-btn"
         onClick={(e) => {
           e.preventDefault();
           if (ikUploadRef.current) {            
@@ -89,7 +89,7 @@ const ImageUpload = ({
           }
         }}
       >
-        <div className="flex gap-2 cursor-pointer">
+        <div className="flex gap-2">
           <Image
             src="/icons/upload.svg"
             alt="upload-icon"
