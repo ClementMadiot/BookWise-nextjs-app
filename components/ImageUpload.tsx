@@ -4,7 +4,6 @@ import { IKImage, ImageKitProvider, IKUpload } from "imagekitio-next";
 import config from "@/lib/config";
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { Button } from "./ui/button";
 import { toast } from "sonner";
 
 const {
@@ -80,8 +79,8 @@ const ImageUpload = ({
         onSuccess={onSuccess}
         fileName="test-upload.png"
       />
-      <Button
-        variant={"upload"}
+      <button
+        className="flex flex-col gap-2 items-center justify-center w-full h-14 bg-dark-300 text-light-100 rounded-md"
         onClick={(e) => {
           e.preventDefault();
           if (ikUploadRef.current) {            
@@ -90,16 +89,19 @@ const ImageUpload = ({
           }
         }}
       >
-        <Image
-          src="/icons/upload.svg"
-          alt="upload-icon"
-          width={22}
-          height={22}
-          className="object-contain"
-        />
-        <p className="text-base text-light-100">Upload a file</p>
-        {/* trigger the upload component */}
-        {file && <p className="upload-filename">{file.filePath}</p>}
+        <div className="flex gap-2 cursor-pointer">
+          <Image
+            src="/icons/upload.svg"
+            alt="upload-icon"
+            width={22}
+            height={22}
+            className="object-contain"
+          />
+          <p className="text-base text-light-100">Upload a file</p>
+          {/* trigger the upload component */}
+          {file && <p className="upload-filename">{file.filePath}</p>}
+        </div>
+        </button>
 
         {file && (
           <IKImage
@@ -109,7 +111,6 @@ const ImageUpload = ({
             height={500}
           />
         )}
-      </Button>
     </ImageKitProvider>
   );
 };

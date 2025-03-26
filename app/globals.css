@@ -243,9 +243,9 @@
   }
 
   /* File Upload */
-  /* .upload-btn {
-    @apply flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md;
-  } */
+  .upload-btn {
+    @apply flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md hover:bg-dark-300/90;
+  }
 
   .upload-filename {
     @apply mt-1 text-center text-xs;
