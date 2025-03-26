@@ -16,7 +16,7 @@ const {
 // upload images securely with ImageKit
 const authendicator = async () => {
   try {
-    const response = await fetch(`${config.env.apiEndpoint}/api/auth/imagekit`);
+    const response = await fetch(`${config.env.apiEndpoint}/api/auth/imageKit`);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -26,7 +26,10 @@ const authendicator = async () => {
     }
 
     const data = await response.json();
+
     const { signature, expire, token } = data;
+    console.log(data);
+    
     return { token, expire, signature };
   } catch (error) {
     throw new Error(`Authentication request failed: ${error}`);
@@ -42,11 +45,17 @@ const ImageUpload = ({
   const ikUploadRef = useRef(null);
   const [file, setFile] = useState<{ filePath: string } | null>(null);
 
-  // hnadle error or success
+  // handle error or success
   const onError = (error: any) => {
     console.log(error);
     toast.error("Image upload failed", {
       description: "Your image could not be uploaded. Please try again",
+      unstyled: true,
+      classNames: {
+        toast: 'bg-dark-100 p-2 rounded-lg flex',
+        title: 'text-red-800 text-base font-semibold',
+        description: '!text-red-400',
+      },
     });
   };
   const onSuccess = (res: any) => {
@@ -75,7 +84,7 @@ const ImageUpload = ({
         variant={"upload"}
         onClick={(e) => {
           e.preventDefault();
-          if (ikUploadRef.current) {
+          if (ikUploadRef.current) {            
             // @ts-ignore
             ikUploadRef.current?.click();
           }

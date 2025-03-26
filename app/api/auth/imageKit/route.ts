@@ -9,11 +9,7 @@ const {
   },
 } = config;
 
-const imagekit = new ImageKit({
-  publicKey: publicKey,
-  privateKey: privateKey,
-  urlEndpoint: urlEndpoint,
-});
+const imagekit = new ImageKit({ publicKey, privateKey, urlEndpoint });
 
 export async function GET() {
   // return all the authentication parameters required by the client

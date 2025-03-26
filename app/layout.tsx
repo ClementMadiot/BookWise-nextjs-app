@@ -3,7 +3,8 @@ import "./globals.css";
 
 import localFont from "next/font/local";
 import { ReactNode } from "react";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
+import { error } from "console";
 
 const ibmPlexSans = localFont({
   src: [
@@ -38,5 +39,5 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       </body>
     </html>
   );
-}
+};
 export default RootLayout;
