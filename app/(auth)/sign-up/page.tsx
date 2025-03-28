@@ -1,6 +1,7 @@
 'use client'
 
 import AuthForm from "@/components/AuthForm";
+import { signUp } from "@/lib/actions/auth";
 import { signUpSchema } from "@/lib/validations";
 
 const Page = () => (
@@ -8,21 +9,13 @@ const Page = () => (
     type="SIGN_UP"
     schema={signUpSchema}
     defaultValues={{
+      fullName: "",
       email: "",
       password: "",
-      fullName: "",
       universityId: 0,
       universityCard: "",
     }}
-    onSubmit={async (data) => {
-      // Example implementation
-      try {
-        // Simulate API call
-        return { success: true };
-      } catch (error) {
-        return { success: false, error: "An error occurred" };
-      }
-    }}
+    onSubmit={signUp}
   />
 );
 

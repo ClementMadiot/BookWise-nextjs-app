@@ -25,6 +25,8 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import ImageUpload from "./ImageUpload";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // <T> is the default value we're passing into the form.
 interface Props<T extends FieldValues> {
@@ -40,6 +42,7 @@ const AuthForm = <T extends FieldValues>({
   defaultValues,
   onSubmit,
 }: Props<T>) => {
+  const router = useRouter();
   // Check if the form is a sign in form.
   const isSignIn = type === "SIGN_IN";
   // 1. Define your form.
@@ -49,7 +52,23 @@ const AuthForm = <T extends FieldValues>({
   });
 
   // 2. Define a submit handler.
-  const handleSubmit: SubmitHandler<T> = async (data) => {};
+  const handleSubmit: SubmitHandler<T> = async (data) => {
+    const result = await onSubmit(data);
+
+    if (result.success) {
+      toast.success("Success", {
+        description: isSignIn
+          ? "You have succesfully signed in"
+          : "You have succesfully signed up",
+      });
+      // push user to the home page
+      router.push("/");
+    } else {
+      toast.warning(`Error ${isSignIn ? 'signing in' : 'signing up'}`, {
+        description: result.error ?? "An error occured",
+      });
+    }
+  };
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold text-white">
@@ -98,7 +117,9 @@ const AuthForm = <T extends FieldValues>({
               )}
             />
           ))}
-          <Button className="form-btn" type="submit">{isSignIn ? "Login" : "Sign Up"}</Button>
+          <Button className="form-btn" type="submit">
+            {isSignIn ? "Login" : "Sign Up"}
+          </Button>
         </form>
       </Form>
       <p className="text-center text-base">

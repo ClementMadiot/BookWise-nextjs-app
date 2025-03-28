@@ -1,6 +1,7 @@
 'use client'
 
 import AuthForm from "@/components/AuthForm";
+import { signInWithCredentails } from "@/lib/actions/auth";
 import { signInSchema } from "@/lib/validations";
 
 const Page = () => (
@@ -11,15 +12,7 @@ const Page = () => (
       email: "",
       password: "",
     }}
-    onSubmit={async (data) => {
-      // Example implementation
-      try {
-        // Simulate API call
-        return { success: true };
-      } catch (error) {
-        return { success: false, error: "An error occurred" };
-      }
-    }}
+    onSubmit={signInWithCredentails}
   />
 );
 
