@@ -2,7 +2,6 @@ import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from "@upstash/redis"
 import config from "@/lib/config";
 
-
 // Create a new ratelimiter, that allows 5 requests per minute
 const ratelimit = new Ratelimit({
   redis: new Redis({
@@ -15,6 +14,3 @@ const ratelimit = new Ratelimit({
 })
 
 export default ratelimit
-
-
-
