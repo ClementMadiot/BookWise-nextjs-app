@@ -42,7 +42,11 @@ export const { POST } = serve<InitialData>(async (context) => {
 
   // Welcom email
   await context.run("new-signup", async () => {
-    await sendEmail( {email, subject: 'Welcome to the platform', message: `Welcom ${fullName}!`});   // New user signup
+    await sendEmail({
+      email,
+      subject: "Welcome to the platform",
+      message: `Welcom ${fullName}!`,
+    }); // New user signup
   });
   // Initial Waiting Period
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
