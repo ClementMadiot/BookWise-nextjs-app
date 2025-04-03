@@ -6,23 +6,24 @@ import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { hash } from "bcryptjs";
 import { eq } from "drizzle-orm";
-import ratelimit from '@/lib/rateLimit';
+import ratelimit from "@/lib/rateLimit";
 // next imports
 import { headers } from "next/headers";
-import { redirect } from 'next/navigation';
-
+import { redirect } from "next/navigation";
+import { workflowClient } from "../workflow";
+import config from "../config";
 
 export const signInWithCredentails = async (
   params: Pick<AuthCredentials, "email" | "password">
 ) => {
   const { email, password } = params;
 
-    // get the current user's IP address
-    const ip = ( await headers()).get('x-forwarded-for') ?? '127.0.0.1'
-    const { success } = await ratelimit.limit(ip);
-  
-    // if rate limit exceeded, return error
-    if (!success) redirect('/too-fast')
+  // get the current user's IP address
+  const ip = (await headers()).get("x-forwarded-for") ?? "127.0.0.1";
+  const { success } = await ratelimit.limit(ip);
+
+  // if rate limit exceeded, return error
+  if (!success) redirect("/too-fast");
 
   try {
     const result = await signIn("credentials", {
@@ -49,11 +50,11 @@ export const signUp = async (params: AuthCredentials) => {
   const { fullName, email, password, universityId, universityCard } = params;
 
   // get the current user's IP address
-  const ip = ( await headers()).get('x-forwarded-for') ?? '127.0.0.1'
+  const ip = (await headers()).get("x-forwarded-for") ?? "127.0.0.1";
   const { success } = await ratelimit.limit(ip);
 
   // if rate limit exceeded, return error
-  if (!success) redirect('/too-fast')
+  if (!success) redirect("/too-fast");
 
   // check if user already exists
   const existingUser = await db
@@ -81,6 +82,16 @@ export const signUp = async (params: AuthCredentials) => {
       universityId,
       universityCard,
     });
+
+    // Trigger Workflow
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
+    });
+
     await signInWithCredentails({ email, password });
 
     return { success: true };
