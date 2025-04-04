@@ -35,8 +35,8 @@ const Sidebar = ({ session }: { session: Session }) => {
               <Link href={link.route} key={link.route}>
                 <div
                   className={cn(
-                    "link",
-                    isSelected && "bg-primary-admin shadow-sm"
+                    "link hover:!bg-light-100/40",
+                    isSelected && "bg-primary-admin hover:!bg-primary-admin shadow-sm"
                   )}
                 >
                   <div className="relative size-5">

@@ -415,7 +415,7 @@
   }
 
   .back-btn {
-    @apply mb-10 w-fit border border-light-300 bg-white text-xs font-medium text-dark-200 hover:bg-light-300 ;
+    @apply !mb-10 !w-fit !border !border-light-300 !bg-white !text-xs !font-medium !text-dark-200 hover:!bg-light-300 ;
   }
 
   /* Confirmation Dialog */
@@ -450,11 +450,11 @@
 
   /* Book Form */
   .book-form_input {
-    @apply min-h-14 border border-gray-100 bg-light-600 p-4 text-base font-semibold placeholder:font-normal placeholder:text-slate-500 ;
+    @apply !min-h-14 border !border-gray-100 !bg-light-600 !p-4 !text-base !font-semibold placeholder:font-normal placeholder:text-slate-500 ;
   }
 
   .book-form_btn {
-    @apply min-h-14 w-full bg-primary-admin hover:bg-primary-admin/95;
+    @apply !min-h-14 w-full !bg-primary-admin hover:!bg-primary-admin/95;
   }
 
   /* Home Page */
