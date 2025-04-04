@@ -450,7 +450,7 @@
 
   /* Book Form */
   .book-form_input {
-    @apply !min-h-14 border !border-gray-100 !bg-light-600 !p-4 !text-base !font-semibold placeholder:font-normal placeholder:text-slate-500 ;
+    @apply !min-h-14 border !border-gray-100 !bg-light-600 !p-4 !text-base !font-semibold placeholder:font-normal placeholder:text-slate-500 resize-none ;
   }
 
   .book-form_btn {

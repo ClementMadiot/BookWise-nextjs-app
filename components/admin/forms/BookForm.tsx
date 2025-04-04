@@ -19,6 +19,7 @@ import { bookSchema } from "@/lib/validations";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import FileUpload from "../../FileUpload";
+import ColorPicker from "../ColorPicker";
 
 interface Props extends Partial<Book> {
   type?: "create" | "update";
@@ -33,7 +34,7 @@ const AuthForm = ({ type, ...book }: Props) => {
       title: "",
       description: "",
       author: "",
-      genre: 1,
+      genre: "",
       rating: 1,
       totalCopies: 1,
       coverUrl: "",
@@ -43,7 +44,10 @@ const AuthForm = ({ type, ...book }: Props) => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof bookSchema>) => {};
+  const onSubmit = async (values: z.infer<typeof bookSchema>) => {
+    console.log(values);
+    
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -104,6 +108,7 @@ const AuthForm = ({ type, ...book }: Props) => {
               <FormControl>
                 <Input
                   required
+                  type="text"
                   placeholder="Book genre"
                   {...field}
                   className="book-form_input"
@@ -196,7 +201,7 @@ const AuthForm = ({ type, ...book }: Props) => {
                 Primary Color
               </FormLabel>
 
-              <FormControl>{/* |Color picker  */}</FormControl>
+              <FormControl><ColorPicker value={field.value} onPickerChange={field.onChange} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -251,7 +256,7 @@ const AuthForm = ({ type, ...book }: Props) => {
         {/* Summary  */}
         <FormField
           control={form.control}
-          name={"description"}
+          name={"summary"}
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1">
               <FormLabel className="text-base font-normal text-dark-500">

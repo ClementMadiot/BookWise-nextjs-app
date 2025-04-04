@@ -43,19 +43,23 @@ interface Props {
   folder: string;
   variant: "dark" | "light";
   onFileChange: (filePath: string) => void;
+  value?: string;
 }
 
-const ImageUpload = ({
+const FileUpload = ({
   onFileChange,
   type,
   accept,
   placeholder,
   folder,
   variant,
+  value,
 }: Props) => {
   // reference to the upload component
   const ikUploadRef = useRef(null);
-  const [file, setFile] = useState<{ filePath: string } | null>(null);
+  const [file, setFile] = useState<{ filePath: string | null }>({
+    filePath: value ?? null,
+  });
 
   const [progress, setProgress] = useState(0);
 
@@ -149,9 +153,7 @@ const ImageUpload = ({
             height={22}
             className="object-contain"
           />
-          <p className={cn("text-base", styles.placehoplder)}>
-            {placeholder}
-          </p>
+          <p className={cn("text-base", styles.placehoplder)}>{placeholder}</p>
           {file && (
             <p className={cn("upload-filename", styles.text)}>
               {file.filePath}
@@ -172,20 +174,20 @@ const ImageUpload = ({
       {file &&
         (type === "image" ? (
           <IKImage
-            alt={file.filePath}
-            path={file.filePath}
+            alt={file?.filePath ?? "uploaded image"}
+            path={file.filePath ?? undefined}
             width={500}
             height={300}
           />
         ) : type === "video" ? (
           <IKVideo
-            path={file.filePath}
+            path={file.filePath ?? undefined}
             controls={true}
-            className="h-96 w-full rounded-full"
+            className="h-96 w-full rounded-2xl"
           />
         ) : null)}
     </ImageKitProvider>
   );
 };
 
-export default ImageUpload;
+export default FileUpload;
