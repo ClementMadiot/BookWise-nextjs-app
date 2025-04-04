@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { bookSchema } from "@/lib/validations";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import FileUpload from "../../FileUpload";
 
 interface Props extends Partial<Book> {
   type?: "create" | "update";
@@ -160,7 +161,7 @@ const AuthForm = ({ type, ...book }: Props) => {
             </FormItem>
           )}
         />
-        {/* Cover Url  */}
+        {/* Book Image  */}
         <FormField
           control={form.control}
           name={"coverUrl"}
@@ -170,12 +171,22 @@ const AuthForm = ({ type, ...book }: Props) => {
                 Book Image
               </FormLabel>
 
-              <FormControl>{/* File Upload  */}</FormControl>
+              <FormControl>
+                <FileUpload
+                  type="image"
+                  accept="image/*"
+                  placeholder="Upload a book cover"
+                  folder="books/covers"
+                  variant="light"
+                  onFileChange={field.onChange}
+                  // value={field.value}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        {/* Cover Color  */}
+        {/* Primary Color  */}
         <FormField
           control={form.control}
           name={"coverColor"}
@@ -222,7 +233,17 @@ const AuthForm = ({ type, ...book }: Props) => {
                 Book Trailer
               </FormLabel>
 
-              <FormControl>{/* File Upload  */}</FormControl>
+              <FormControl>
+                <FileUpload
+                  type="video"
+                  accept="video/*"
+                  placeholder="Upload a book trailer"
+                  folder="books/videos"
+                  variant="light"
+                  onFileChange={field.onChange}
+                  value={field.value}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -248,8 +269,10 @@ const AuthForm = ({ type, ...book }: Props) => {
               <FormMessage />
             </FormItem>
           )}
-          />
-          <Button type="submit" className="book-form_btn text-white">Add Book to Library</Button>
+        />
+        <Button type="submit" className="book-form_btn text-white">
+          Add Book to Library
+        </Button>
       </form>
     </Form>
   );
