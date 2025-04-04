@@ -11,11 +11,21 @@ const Home = async () => {
 
   return (
     <>
-      <BookOverview {...sampleBooks[0]} />
+      <BookOverview
+        {...{
+          ...sampleBooks[0],
+          totalCopies: sampleBooks[0].total_copies,
+          availableCopies: sampleBooks[0].available_copies,
+        }}
+      />
 
       <BookList
         title="Latest Books"
-        books={sampleBooks}
+        books={sampleBooks.map(book => ({
+          ...book,
+          totalCopies: book.total_copies,
+          availableCopies: book.available_copies,
+        }))}
         containerClassName="mt-28"
       />
     </>
