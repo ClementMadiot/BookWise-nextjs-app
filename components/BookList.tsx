@@ -1,5 +1,5 @@
-import React from 'react'
-import BookCard from './BookCard';
+import React from "react";
+import BookCard from "./BookCard";
 
 interface Props {
   title: string;
@@ -8,9 +8,10 @@ interface Props {
 }
 
 const BookList = ({ title, books, containerClassName }: Props) => {
+  if (books.length < 2) return null; // don't show the list if there are less than 2 books
   return (
     <section className={containerClassName}>
-      <h2 className='font-bebas-neue text-4xl text-light-100'>{title}</h2>
+      <h2 className="font-bebas-neue text-4xl text-light-100">{title}</h2>
 
       <ul className="book-list">
         {books.map((book) => (
@@ -18,7 +19,7 @@ const BookList = ({ title, books, containerClassName }: Props) => {
         ))}
       </ul>
     </section>
-  )
-}
+  );
+};
 
-export default BookList
+export default BookList;
