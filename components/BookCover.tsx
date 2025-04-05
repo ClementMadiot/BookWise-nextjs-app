@@ -44,6 +44,7 @@ const BookCover = ({
         style={{ left: "12%", width: "87.5%", height: "88%" }}
       >
         <IKImage
+          // src={coverImage}
           path={coverImage}
           urlEndpoint={config.env.imagekit.urlEndpoint}
           alt="book cover"

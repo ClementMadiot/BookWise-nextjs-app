@@ -15,7 +15,9 @@ const page = () => {
       <Button>Logout</Button>
     </form>
 
-    <BookList title='Borrowed Books' books={sampleBooks} />
+    <BookList
+      title='Borrowed Books'
+      books={sampleBooks.map(book => ({ ...book, createdAt: new Date(book.createdAt) }))}/>
     </>
   )
 }
