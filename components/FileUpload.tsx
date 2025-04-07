@@ -77,12 +77,6 @@ const FileUpload = ({
     console.log(error);
     toast.error(`${type} upload failed`, {
       description: `Your ${type} could not be uploaded. Please try again`,
-      unstyled: true,
-      classNames: {
-        toast: "bg-dark-100 p-2 rounded-lg flex",
-        title: "text-red-800 text-base font-semibold",
-        description: "!text-red-400",
-      },
     });
   };
   const onSuccess = (res: any) => {
@@ -98,14 +92,14 @@ const FileUpload = ({
   const onValidate = (file: File) => {
     if (type === "image") {
       if (file.size > 20 * 1024 * 1024) {
-        toast.warning("File size too large", {
+        toast.error("File size too large", {
           description: "Please upload a file that is less than 20MB",
         });
         return false;
       }
     } else if (type === "video") {
       if (file.size > 50 * 1024 * 1024) {
-        toast.warning("File size too large", {
+        toast.error("File size too large", {
           description: "Please upload a file that is less than 50MB",
         });
         return false;

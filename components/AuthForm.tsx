@@ -60,11 +60,14 @@ const AuthForm = <T extends FieldValues>({
         description: isSignIn
           ? "You have succesfully signed in"
           : "You have succesfully signed up",
+        classNames: {
+          toast: "!bg-green-500",
+        },
       });
       // push user to the home page
       router.push("/");
     } else {
-      toast.warning(`Error ${isSignIn ? "signing in" : "signing up"}`, {
+      toast.error(`Error ${isSignIn ? "signing in" : "signing up"}`, {
         description: result.error ?? "An error occured",
       });
     }

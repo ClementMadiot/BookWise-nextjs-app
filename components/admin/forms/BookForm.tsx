@@ -48,17 +48,17 @@ const AuthForm = ({ type, ...book }: Props) => {
 
   const onSubmit = async (values: z.infer<typeof bookSchema>) => {
     console.log(values);
-    const result = await createBook(values)
+    const result = await createBook(values);
 
-    if(result.success) {
-      toast.success('Success', {
+    if (result.success) {
+      toast.success("Success", {
         description: "Book created successfully",
-      })
-      router.push(`/admin/books/${result.data.id}`)
+      });
+      router.push(`/admin/books/${result.data.id}`);
     } else {
-      toast.error('Error', {
+      toast.error("Error", {
         description: result.error,
-      })
+      });
     }
   };
   return (
@@ -214,7 +214,12 @@ const AuthForm = ({ type, ...book }: Props) => {
                 Primary Color
               </FormLabel>
 
-              <FormControl><ColorPicker value={field.value} onPickerChange={field.onChange} /></FormControl>
+              <FormControl>
+                <ColorPicker
+                  value={field.value}
+                  onPickerChange={field.onChange}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

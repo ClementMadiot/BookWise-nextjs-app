@@ -8,7 +8,7 @@ const page = () => {
   return (
     <>
     <form action={async () => {
-      'use server'
+    'use server'
 
       await signOut()
     }} className='mb-10'>

@@ -23,7 +23,7 @@ const Home = async () => {
       <BookOverview 
       // {...sampleBooks[0]} 
       {...latestBooks[0]} 
-      id={sesion?.user?.id as string}
+      userId={sesion?.user?.id as string}
       />
       
 
