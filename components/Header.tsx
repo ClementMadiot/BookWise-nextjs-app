@@ -1,24 +1,38 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { signOut } from "@/auth";
+import { Avatar, AvatarFallback } from "./ui/avatar";
+import { cn, getInitials } from "@/lib/utils";
+import { Session } from "next-auth";
+import { usePathname } from "next/navigation";
+import { logoutAction } from "./LogoutAction";
 
-const Header = () => {
+const Header = ({ session }: { session: Session }) => {
+  const pathname = usePathname();
   return (
-    <header className="my-10 flex justify-between gap-5">
+    <header className="my-10 flex justify-between items-center gap-5">
       <Link href={"/"}>
         <Image src={"/icons/logo.svg"} alt="logo" width={40} height={40} />
       </Link>
 
-      <ul className="flex flex-row items-center gap-8">
+      <ul className="flex  items-center flex-row gap-8">
         <li>
-          <form action={async () => {
-                'use server'
-          
-                await signOut()
-              }} className='mb-10'>
-                <Button>Logout</Button>
-              </form>
+          <Link
+            href={"/my-profile"}
+            className={cn(pathname === "/my-profile" ? "hidden" : "")}
+          >
+            <Avatar>
+              <AvatarFallback className="bg-amber-100">
+                {getInitials(session?.user?.name || "")}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
+        </li>
+        <li className="flex items-center">
+          <form action={logoutAction}>
+            <Button>Logout</Button>
+          </form>
         </li>
       </ul>
     </header>

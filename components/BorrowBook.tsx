@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import { borrowBook } from "@/lib/actions/book";
 
 interface Props {
-  bookId: string;
   userId: string;
+  bookId: string;
   borrowingEligibility: {
     isEligible: boolean;
     message: string;
@@ -17,28 +17,24 @@ interface Props {
 }
 
 const BorrowBook = ({
-  bookId,
   userId,
+  bookId,
   borrowingEligibility: { isEligible, message },
 }: Props) => {
-  // Get accesss to the router properties to renate the user after borrowing the book
   const router = useRouter();
   const [borrowing, setBorrowing] = useState(false);
 
-  const handleBorrowing = async () => {
+  const handleBorrowBook = async () => {
     if (!isEligible) {
       toast.error("Error", {
-        description: message,
-      });
+          description: message,
+        });
     }
 
     setBorrowing(true);
 
     try {
-      const result = await borrowBook({
-        bookId,
-        userId,
-      });
+      const result = await borrowBook({ bookId, userId });
 
       if (result.success) {
         toast.success("Success", {
@@ -51,7 +47,7 @@ const BorrowBook = ({
         });
       }
     } catch (error) {
-      toast.error(`Error :${error}`, {
+      toast.error("Error", {
         description: "An error occured while borrowing the book",
       });
     } finally {
@@ -61,12 +57,12 @@ const BorrowBook = ({
   return (
     <Button
       className="book-overview_btn"
-      onClick={handleBorrowing}
+      onClick={handleBorrowBook}
       disabled={borrowing}
     >
-      <Image src={"/icons/book.svg"} alt="book" width={20} height={20} />
+      <Image src="/icons/book.svg" alt="book" width={20} height={20} />
       <p className="font-bebas-neue text-xl text-dark-100">
-        {borrowing ? "Borrowing..." : "Borrow Book"}
+        {borrowing ? "Borrowing ..." : "Borrow Book"}
       </p>
     </Button>
   );

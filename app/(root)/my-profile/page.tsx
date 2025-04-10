@@ -21,6 +21,10 @@ const page = async () => {
       coverUrl: books.coverUrl,
       coverColor: books.coverColor,
       description: books.description,
+      totalCopies: books.totalCopies,
+      availableCopies: books.availableCopies,
+      videoUrl: books.videoUrl,
+      summary: books.summary,
       borrowDate: borrowRecords.borrowDate,
       dueDate: borrowRecords.dueDate,
       returnDate: borrowRecords.returnDate,
@@ -31,22 +35,22 @@ const page = async () => {
     .where(
       eq(borrowRecords.userId, session.user.id) &&
       eq(borrowRecords.status, "BORROWED")
-    )).map(book => ({
-      ...book,
-      totalCopies: 0, // Default value
-      availableCopies: 0, // Default value
-      videoUrl: '', // Default value
-      summary: '', // Default value
-      createdAt: new Date(), // Default value
-    }));
+    ));
+
+      // Handle empty or single-item arrays
+  if (!borrowedBooks.length) {
+    return <p className='font-bebas-neue text-4xl text-light-100 m-auto'>You have not borrowed any books yet.</p>;
+  }
 
   return (
-    <>
     <BookList
       title='Borrowed Books'
-      books={borrowedBooks} 
+      books={borrowedBooks.map((book) => ({
+        ...book,
+        createdAt: new Date(book.borrowDate), // Ensure borrowDate is a Date object
+      }))}
       />
-    </>
+
   )
 }
 
