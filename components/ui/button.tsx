@@ -23,6 +23,8 @@ const buttonVariants = cva(
         book: "bg-gradient-400 mt-3 min-h-14 w-full !font-bebas-neue text-base text-primary hover:bg-gradient-400/80",
         upload:
           "bg-dark-300 text-light-100 flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md hover:bg-dark-300/90",
+        icon:
+        "bg-none !px-0 [&_img]:transition-transform [&_img]:duration-200 hover:[&_img]:scale-110",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
