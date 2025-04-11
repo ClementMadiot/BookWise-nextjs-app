@@ -2,12 +2,13 @@
 
 import config from "@/lib/config";
 import { IKImage, ImageKitProvider } from "imagekitio-next";
+import Image from "next/image";
 
 interface Props {
   fullName: string;
   email: string;
   status: string;
-  role: string
+  role: string;
   universityId: number;
   universityCard: string;
 }
@@ -20,22 +21,33 @@ const BookProfile = ({
   status,
   role,
 }: Props) => {
-  const universityCardUrl = `${config.env.imagekit.urlEndpoint}`;
-  console.log(universityCardUrl);
   return (
-    <div className="gradient-blue flex flex-col gap-10 px-4">
-      <article className=" flex flex-col gap-6 py-4 rounded-lg">
-        <div className="flex justify-start gap-6">
-          {/* <Avatar>
-            <AvatarFallback className="bg-amber-100">
-              {getInitials(session?.user?.name || "")}
-            </AvatarFallback>
-          </Avatar> */}
-          <div className="flex flex-col gap-2">
+    <div className="gradient-blue flex flex-col gap-6 px-4 rounded-xl">
+      <div className="flex justify-center items-center">
+        <Image
+          src="/icons/profile-info.svg"
+          alt="Profile"
+          width={59}
+          height={88}
+          className="object-contain"
+        />
+      </div>
+      <article className=" flex flex-col gap-4 pt-1 rounded-lg">
+        <div className="flex justify-start gap-3 items-center ">
+          <div className="bg-dark-600/20 rounded-full p-2">
+            <Image
+              src="/icons/user-fill.svg"
+              alt="Profile"
+              width={70}
+              height={70}
+              className="rounded-full"
+            />
+          </div>
+          <div className="flex flex-col gap-4">
+            <p className="text-light-100 text-xs">
+              status : <span className="italic text-white">{status}</span>
             <p className="text-white text-xl font-semibold">{fullName}</p>
-            <p className="text-light-100 text-xs">{email}</p>
-            <p className="text-light-100">
-              status: <span className="italic text-white">{status}</span>
+            <p className="text-light-100 text-sm">{email}</p>
             </p>
           </div>
         </div>
@@ -44,13 +56,13 @@ const BookProfile = ({
           <p className="text-light-100 text-md">Role</p>
           <p className="text-white text-lg font-semibold">{role}</p>
         </div>
-        
+
         <div>
           <p className="text-light-100 text-md">Studen ID</p>
           <p className="text-white text-lg font-semibold">{universityId}</p>
         </div>
       </article>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center pb-4">
         <ImageKitProvider
           publicKey={config.env.imagekit.publicKey}
           urlEndpoint={config.env.imagekit.urlEndpoint}

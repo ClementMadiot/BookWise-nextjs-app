@@ -65,7 +65,7 @@ const page = async () => {
 
   return (
     <>
-      <section className="flex flex-1 gap-20 justify-center items-center">
+      <section className="flex flex-col lg:flex-row gap-20 justify-between items-stretch lg:gap-16">
         <BookProfile
           fullName={user.fullName}
           email={user.email}
@@ -80,6 +80,7 @@ const page = async () => {
             ...book,
             createdAt: new Date(book.borrowDate), // Ensure borrowDate is a Date object
           }))}
+          containerClassName="flex-grow"
         />
       </section>
     </>

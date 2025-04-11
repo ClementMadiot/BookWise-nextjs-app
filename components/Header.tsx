@@ -39,7 +39,7 @@ const Header = ({ session }: { session: Session }) => {
         <li className="flex items-center">
           <form action={logoutAction}>
             <Button variant={"icon"} >
-              <Image src="/icons/logout.png" alt="Logout" width={20} height={20} />
+              <Image src="/icons/logout.svg" alt="Logout" width={20} height={20} />
             </Button>
           </form>
         </li>
