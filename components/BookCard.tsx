@@ -24,29 +24,29 @@ const BookCard = ({
   // Convert the coverColor to rgba with 30% opacity
   const backgroundColorWithOpacity = `${coverColor}4D`; // 30% opacity in hex is 4D
   return (
-    <li className={cn(isLoanedBook && "xs:w-70 w-full gradient-vertical p-4 rounded-2xl")}>
+    <li className={cn(isLoanedBook && "xs:w-66 w-full gradient-vertical rounded-2xl py-4")}>
       <Link
         href={`/books/${id}`}
         className={cn(isLoanedBook && "w-full flex flex-col items-center")}
       >
         {isLoanedBook ? (
           <div
-            className="px-6 py-4 rounded-xl"
+            className="px-10 py-6 rounded-xl"
             style={{ backgroundColor: backgroundColorWithOpacity }}
           >
-            <BookCover coverColor={coverColor} coverImage={coverUrl} />
+            <BookCover coverColor={coverColor} coverImage={coverUrl} variant={'medium'} />
           </div>
         ) : (
           <BookCover coverColor={coverColor} coverImage={coverUrl} />
         )}
 
-        <div className={cn("mt-4", !isLoanedBook && "xs:max-w-40 max-w-28")}>
+        <div className={cn("mt-4 px-4", !isLoanedBook && "xs:max-w-40 max-w-28")}>
           <p className="book-title">{title}</p>
           <p className="book-genre">{genre}</p>
         </div>
       </Link>
       {isLoanedBook && (
-        <div className="mt-3 w-full">
+        <div className="mt-3 w-full px-4">
           <div className="book-loaned">
             <Image
               src="/icons/book-2.svg"

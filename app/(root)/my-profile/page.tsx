@@ -65,8 +65,8 @@ const page = async () => {
 
   return (
     <>
-      <section className="flex flex-col lg:flex-row  justify-between items-stretch lg:items-start lg:gap-10 ">
-        <div className="flex-1 max-w-lg">
+      <section className="flex flex-col justify-center lg:flex-row lg:justify-between items-stretch lg:items-start gap-8">
+        <div className="max-w-lg mx-auto lg:max-w-none">
           <BookProfile
             fullName={user.fullName}
             email={user.email}
@@ -76,7 +76,7 @@ const page = async () => {
             role={user.role ?? ""}
           />
         </div>
-        <div className="max-w-lg ">
+        <div className="flex-1">
           <BookList
             title="Borrowed Books"
             books={borrowedBooks.map((book) => ({

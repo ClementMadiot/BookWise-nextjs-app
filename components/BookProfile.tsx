@@ -22,7 +22,7 @@ const BookProfile = ({
   role,
 }: Props) => {
   return (
-    <div className="gradient-blue flex flex-col gap-6 px-4 rounded-xl">
+    <div className="gradient-blue flex flex-col gap-6 px-8 rounded-xl">
       <div className="flex justify-center items-center">
         <Image
           src="/icons/profile-info.svg"
