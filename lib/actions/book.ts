@@ -73,3 +73,57 @@ export const borrowBook = async (params: BorrowBookParams) => {
     };
   }
 };
+
+export const returnBook = async (params: BorrowBookParams) => {
+  const { userId, bookId } = params;
+
+  try {
+    // Delete the borrow record
+    const deletedRecord = await db
+      .delete(borrowRecords)
+      .where(
+        and(
+          eq(borrowRecords.userId, userId),
+          eq(borrowRecords.bookId, bookId),
+          eq(borrowRecords.status, "BORROWED")
+        )
+      );
+
+    if (!deletedRecord.rowCount) {
+      return {
+        success: false,
+        error: "No borrow record found for this book",
+      };
+    }
+
+    // Check if the book is available for borrowing
+    const book = await db
+      .select({ availableCopies: books.availableCopies })
+      .from(books)
+      .where(eq(books.id, bookId))
+      .limit(1);
+
+    if (!book.length || book[0].availableCopies <= 0) {
+      return {
+        success: false,
+        error: "Book is not available for borrowing",
+      };
+    }
+
+    // Increment the available copies of the book
+    await db
+    .update(books)
+    .set({ availableCopies: book[0].availableCopies + 1 })
+    .where(eq(books.id, bookId));
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "An error occurred while returning the book",
+    };
+  }
+};

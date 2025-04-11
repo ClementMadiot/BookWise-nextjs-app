@@ -171,12 +171,12 @@
   }
 
   .book-loaned {
-    @apply flex flex-row items-center gap-1 max-xs:justify-center;
+    @apply flex flex-row items-center gap-1 max-xs:justify-center pb-1;
   }
 
-  /* .book-btn {
+  .book-btn {
     @apply bg-dark-600 !mt-3 min-h-14 w-full !font-bebas-neue text-base text-primary;
-  } */
+  }
 
   /* Borrowed Book */
   .borrowed-book {
@@ -210,7 +210,7 @@
 
   /* Book List */
   .book-list {
-    @apply mt-10 flex flex-wrap gap-5 max-xs:justify-between xs:gap-10;
+    @apply mt-10 flex flex-wrap gap-5 max-xs:justify-between ;
   }
 
   /* Book Overview */
@@ -270,7 +270,7 @@
 
   /* Book Receipt */
   .book-receipt_admin-btn {
-    @apply bg-light-300 rounded-md text-primary-admin font-semibold hover:bg-light-300/80;
+    @apply !bg-light-300 !rounded-md !text-primary-admin !font-semibold hover:!bg-light-300/80;
   }
 
   /* Book Ticket */

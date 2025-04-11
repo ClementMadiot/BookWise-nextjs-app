@@ -1,9 +1,11 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import Image from "next/image";
 import BookCover from "./BookCover";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { Button } from "./ui/button";
+
+import ReturnBook from "./ReturnBook";
+import { usePathname } from "next/navigation";
 
 const BookCard = ({
   id,
@@ -12,22 +14,50 @@ const BookCard = ({
   coverColor,
   coverUrl,
   isLoanedBook = false,
-}: Book) => {
+  userId,
+}: Book & { userId: string }) => {
+  const pathname = usePathname();
+
+  if (pathname === "/my-profile") {
+    isLoanedBook = true;
+  }
+  // Convert the coverColor to rgba with 30% opacity
+  const backgroundColorWithOpacity = `${coverColor}4D`; // 30% opacity in hex is 4D
   return (
-    <li className={cn(isLoanedBook && "xs:w-52 w-full")}>
+    <li className={cn(isLoanedBook && "xs:w-70 w-full gradient-vertical p-4 rounded-2xl")}>
       <Link
         href={`/books/${id}`}
         className={cn(isLoanedBook && "w-full flex flex-col items-center")}
       >
-        <BookCover coverColor={coverColor} coverImage={coverUrl} />
+        {isLoanedBook ? (
+          <div
+            className="px-6 py-4 rounded-xl"
+            style={{ backgroundColor: backgroundColorWithOpacity }}
+          >
+            <BookCover coverColor={coverColor} coverImage={coverUrl} />
+          </div>
+        ) : (
+          <BookCover coverColor={coverColor} coverImage={coverUrl} />
+        )}
 
         <div className={cn("mt-4", !isLoanedBook && "xs:max-w-40 max-w-28")}>
           <p className="book-title">{title}</p>
           <p className="book-genre">{genre}</p>
         </div>
-
-        {isLoanedBook && (
-          <div className="mt-3 w-full">
+      </Link>
+      {isLoanedBook && (
+        <div className="mt-3 w-full">
+          <div className="book-loaned">
+            <Image
+              src="/icons/book-2.svg"
+              alt="book-2"
+              width={18}
+              height={18}
+              className="object-contain"
+            />
+            <p className="text-light-100">Borrowed on Dec 26</p>
+          </div>
+          <div className="flex justify-between">
             <div className="book-loaned">
               <Image
                 src="/icons/calendar.svg"
@@ -38,11 +68,14 @@ const BookCard = ({
               />
               <p className="text-light-100">11 days left to return</p>
             </div>
-
-            <Button variant={"book"}>Download</Button>
+            <ReturnBook
+              userId={userId}
+              bookId={id}
+              coverColor={backgroundColorWithOpacity}
+            />
           </div>
-        )}
-      </Link>
+        </div>
+      )}
     </li>
   );
 };

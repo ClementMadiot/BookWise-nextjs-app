@@ -65,23 +65,29 @@ const page = async () => {
 
   return (
     <>
-      <section className="flex flex-col lg:flex-row gap-20 justify-between items-stretch lg:gap-16">
-        <BookProfile
-          fullName={user.fullName}
-          email={user.email}
-          universityId={user.universityId}
-          universityCard={user.universityCard}
-          status={user.status ?? ""}
-          role={user.role ?? ""}
-        />
-        <BookList
-          title="Borrowed Books"
-          books={borrowedBooks.map((book) => ({
-            ...book,
-            createdAt: new Date(book.borrowDate), // Ensure borrowDate is a Date object
-          }))}
-          containerClassName="flex-grow"
-        />
+      <section className="flex flex-col lg:flex-row  justify-between items-stretch lg:items-start lg:gap-10 ">
+        <div className="flex-1 max-w-lg">
+          <BookProfile
+            fullName={user.fullName}
+            email={user.email}
+            universityId={user.universityId}
+            universityCard={user.universityCard}
+            status={user.status ?? ""}
+            role={user.role ?? ""}
+          />
+        </div>
+        <div className="max-w-lg ">
+          <BookList
+            title="Borrowed Books"
+            books={borrowedBooks.map((book) => ({
+              ...book,
+              createdAt: new Date(book.borrowDate), // Ensure borrowDate is a Date object
+            }))}
+            userId={session?.user?.id}
+            containerClassName="lg:justify-end"
+            listBookClassName="justify-center lg:justify-start"
+          />
+        </div>
       </section>
     </>
   );

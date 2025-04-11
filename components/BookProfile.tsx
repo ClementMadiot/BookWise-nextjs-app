@@ -43,12 +43,12 @@ const BookProfile = ({
               className="rounded-full"
             />
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
             <p className="text-light-100 text-xs">
               status : <span className="italic text-white">{status}</span>
+            </p>
             <p className="text-white text-xl font-semibold">{fullName}</p>
             <p className="text-light-100 text-sm">{email}</p>
-            </p>
           </div>
         </div>
 
