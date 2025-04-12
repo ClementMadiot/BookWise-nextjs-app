@@ -15,7 +15,7 @@ import ViewCard from "./forms/ViewCard";
 import { useEffect, useState } from "react";
 import { countUserBorrowedBooks } from "@/lib/admin/action/user";
 
-export const tableName = [
+const tableName = [
   "Name",
   "Date Joined",
   "Role",
@@ -26,7 +26,6 @@ export const tableName = [
 ];
 
 interface Props {
-  // booksBorrowed: number;
   users: User[];
 }
 

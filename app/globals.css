@@ -419,7 +419,7 @@
   }
 
   .back-btn {
-    @apply !mb-10 !w-fit !border !border-light-300 !bg-white !text-xs !font-medium !text-dark-200 hover:!bg-light-300 ;
+    @apply !mb-10 !w-fit !border !border-light-300 !bg-white !text-xs !font-medium !text-dark-200 hover:!bg-white/90;
   }
 
   /* Confirmation Dialog */

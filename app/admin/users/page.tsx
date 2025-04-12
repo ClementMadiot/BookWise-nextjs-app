@@ -1,6 +1,6 @@
 import React from "react";
 import Title from "@/components/admin/Title";
-import AllList from "@/components/admin/AllList";
+import AllList from "@/components/admin/AllUsers";
 import { users } from "@/database/schema";
 import { db } from "@/database/drizzle";
 
