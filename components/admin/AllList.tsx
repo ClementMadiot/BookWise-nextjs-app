@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 
 import {
@@ -11,6 +12,8 @@ import {
 import DeleteUser from "./DeleteUser";
 import Role from "./Role";
 import ViewCard from "./forms/ViewCard";
+import { useEffect, useState } from "react";
+import { countUserBorrowedBooks } from "@/lib/admin/action/user";
 
 export const tableName = [
   "Name",
@@ -27,7 +30,24 @@ interface Props {
   users: User[];
 }
 
-const AllList = async ({ users }: Props) => {
+const AllList = ({ users }: Props) => {
+  const [borrowedBooksCounts, setBorrowedBooksCounts] = useState<
+    Record<string, number>
+  >({});
+
+  useEffect(() => {
+    const fetchBorrowedBooksCounts = async () => {
+      const counts: Record<string, number> = {};
+      for (const user of users) {
+        const count = await countUserBorrowedBooks(user.id);
+        counts[user.id] = count;
+      }
+      setBorrowedBooksCounts(counts);
+    };
+
+    fetchBorrowedBooksCounts();
+  }, [users]);
+
   return (
     <Table>
       <TableHeader className="!py-4">
@@ -78,7 +98,9 @@ const AllList = async ({ users }: Props) => {
             </TableCell>
 
             {/* Books Borrowed */}
-            <TableCell className="p-4 !text-dark-200 font-semibold text-sm"></TableCell>
+            <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
+              {borrowedBooksCounts[user.id] ?? "Loading..."}
+            </TableCell>
 
             {/* University ID No */}
             <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
