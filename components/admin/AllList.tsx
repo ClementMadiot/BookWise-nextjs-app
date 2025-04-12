@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import React from "react";
 
@@ -11,7 +10,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import DeleteUser from "./DeleteUser";
-
+import { userRoles } from "@/constants";
+import Role from "./Role";
 
 export const tableName = [
   "Name",
@@ -29,6 +29,7 @@ interface Props {
 }
 
 const AllList = async ({ users }: Props) => {
+
   return (
     <>
       <Table>
@@ -74,18 +75,20 @@ const AllList = async ({ users }: Props) => {
                   year: "numeric",
                 })}
               </TableCell>
+
               {/* Role */}
               <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
-                {user.role === "ADMIN" ? "Admin" : "User"}
+                <Role userId={user.id} role={user.role} />
               </TableCell>
+
               {/* Books Borrowed */}
-              <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
-                {/* {booksBorrowed} */} 1
-              </TableCell>
+              <TableCell className="p-4 !text-dark-200 font-semibold text-sm"></TableCell>
+
               {/* University ID No */}
               <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
                 {user.universityId}
               </TableCell>
+
               {/* University ID Card */}
               <TableCell className="p-4 !text-dark-200 font-semibold">
                 <a

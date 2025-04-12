@@ -5,11 +5,12 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none   aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 cursor-pointer focus-visible:ring-[2px]",
+  // shadow-xs hover:bg-primary/85 focus-visible:border-ring aria-invalid:border-destructive focus-visible:ring-ring/50 focus-visible:ring-[3px]
   {
     variants: {
       variant: {
-        default: "bg-primary text-dark-100 shadow-xs hover:bg-primary/85 gap-2",
+        default: "bg-primary text-dark-100  gap-2",
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
@@ -25,6 +26,8 @@ const buttonVariants = cva(
           "bg-dark-300 text-light-100 flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md hover:bg-dark-300/90",
         icon:
         "bg-none !px-0 [&_img]:transition-transform [&_img]:duration-200 hover:[&_img]:scale-110 !text-light-100",
+        role:
+        ""
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
