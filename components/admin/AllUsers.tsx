@@ -83,7 +83,7 @@ const AllList = ({ users }: Props) => {
               </div>
             </TableCell>
             {/* Date Joined */}
-            <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
+            <TableCell className="p-4 !text-dark-200 font-medium text-sm">
               {new Date(user.createdAt).toLocaleDateString("en-US", {
                 month: "short",
                 day: "2-digit",
@@ -92,22 +92,22 @@ const AllList = ({ users }: Props) => {
             </TableCell>
 
             {/* Role */}
-            <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
+            <TableCell className="p-4 !text-dark-200 font-medium text-sm">
               <Role userId={user.id} role={user.role} />
             </TableCell>
 
             {/* Books Borrowed */}
-            <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
+            <TableCell className="p-4 !text-dark-200 font-medium text-sm">
               {borrowedBooksCounts[user.id] ?? "Loading..."}
             </TableCell>
 
             {/* University ID No */}
-            <TableCell className="p-4 !text-dark-200 font-semibold text-sm">
+            <TableCell className="p-4 !text-dark-200 font-medium text-sm">
               {user.universityId}
             </TableCell>
 
             {/* University ID Card */}
-            <TableCell className="p-4 !text-dark-200 font-semibold">
+            <TableCell className="p-4 !text-dark-200 font-medium">
               <ViewCard universityCard={user.universityCard} />
             </TableCell>
             {/* Action */}
