@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/database/drizzle";
-import { borrowRecords, users } from "@/database/schema";
+import { books, borrowRecords, users } from "@/database/schema";
 import { eq, sql } from "drizzle-orm";
 
 export const deleteUser = async (userId: string) => {
@@ -13,6 +13,16 @@ export const deleteUser = async (userId: string) => {
     return { success: false, error: "Failed to delete user" };
   }
 };
+
+export const deleteBook = async (bookId: string) => {
+  try {
+    await db.delete(books).where(eq(books.id, bookId));
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    return { success: false, error: "Failed to delete book" };
+  }
+}
 
 export const updateUserRole = async (userId: string, role: string) => {
   try {
@@ -36,7 +46,10 @@ export const countUserBorrowedBooks = async (userId: string) => {
       })
       .from(borrowRecords)
       .where(
-        sql`${eq(borrowRecords.userId, userId)} AND ${eq(borrowRecords.status, "BORROWED")}`
+        sql`${eq(borrowRecords.userId, userId)} AND ${eq(
+          borrowRecords.status,
+          "BORROWED"
+        )}`
       );
 
     return result[0]?.borrowedBooksCount || 0; // Return the count or 0 if no records

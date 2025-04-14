@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import DeleteUser from "./DeleteUser";
+import DeleteBtn from "./DeleteBtn";
 import Role from "./Role";
 import ViewCard from "./forms/ViewCard";
 import { useEffect, useState } from "react";
@@ -112,7 +112,7 @@ const AllList = ({ users }: Props) => {
             </TableCell>
             {/* Action */}
             <TableCell className="p-4">
-              <DeleteUser usersId={users[0].id} />
+              <DeleteBtn id={users[0].id} />
             </TableCell>
           </TableRow>
         ))}

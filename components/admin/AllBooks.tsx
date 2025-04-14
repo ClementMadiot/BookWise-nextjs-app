@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import BookCover from "../BookCover";
 import BookEdit from "./BookEdit";
+import DeleteBtn from "./DeleteBtn";
 
 const tableName = ["Book Title", "Author", "Genre", "Date Created", "Action"];
 
@@ -73,8 +74,8 @@ const AllBooks = ({ books }: Props) => {
             </TableCell>
             <TableCell className="flex items-center gap-2 p-4">
               {/* Add your action buttons here */}
-              <BookEdit id={book.id}/>
-              <button className="text-red-500">D</button>
+              <BookEdit id={book.id} />
+              <DeleteBtn type="book" id={book.id} />
             </TableCell>
           </TableRow>
         ))}
