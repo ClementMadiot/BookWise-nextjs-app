@@ -10,9 +10,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-dark-100  gap-2",
+        default: "bg-primary text-dark-100 gap-2 shadow-xs hover:bg-primary/85 focus-visible:border-ring aria-invalid:border-destructive focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "bg-red-400 text-light-300 shadow-xs hover:bg-red-400/90 w-full",
         outline:
           "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:
@@ -26,8 +26,8 @@ const buttonVariants = cva(
           "bg-dark-300 text-light-100 flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md hover:bg-dark-300/90",
         icon:
         "bg-none !px-0 [&_img]:transition-transform [&_img]:duration-200 hover:[&_img]:scale-110 !text-light-100",
-        role:
-        ""
+        action:
+        "text-light-300 w-full bg-green-400 shadow-xs hover:bg-green-400/90",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

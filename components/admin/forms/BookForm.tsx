@@ -19,7 +19,7 @@ import { bookSchema } from "@/lib/validations";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import FileUpload from "../../FileUpload";
-import ColorPicker from "../ColorPicker";
+import ColorPicker from "./ColorPicker";
 import { createBook, updateBook } from "@/lib/admin/action/book";
 import { toast } from "sonner";
 

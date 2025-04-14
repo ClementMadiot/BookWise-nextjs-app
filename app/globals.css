@@ -613,4 +613,8 @@
   .user-card .email {
     @apply text-light-500 text-sm line-clamp-1 break-words w-full;
   }
+
+  .admin-cell {
+    @apply !text-dark-200 font-medium text-sm 
+  }
 }

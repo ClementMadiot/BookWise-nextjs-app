@@ -1,6 +1,5 @@
 import React from "react";
-import Title from "@/components/admin/Title";
-import AllList from "@/components/admin/AllUsers";
+import AllUser from "@/components/admin/AllUsers";
 import { users } from "@/database/schema";
 import { db } from "@/database/drizzle";
 
@@ -16,9 +15,7 @@ const page = async () => {
 
   return (
     <section className="w-full rounded-2xl bg-white p-4">
-      <Title title="All Users" />
-
-        <AllList users={allUsers} />
+        <AllUser users={allUsers} />
       
     </section>
   );
