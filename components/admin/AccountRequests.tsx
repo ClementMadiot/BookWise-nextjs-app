@@ -1,9 +1,7 @@
-import React from "react";
 import TableComponent from "./tables/TableComponent";
 import { TableCell } from "../ui/table";
 import ViewCard from "./tables/ViewCard";
 import Action from "./tables/Action";
-import { Session } from "next-auth";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { getInitials } from "@/lib/utils";
 
@@ -12,6 +10,7 @@ const tableHeader = [
   "Date Joined",
   "Unmiversity ID No",
   "University ID Card",
+  "Status",
   "Action",
 ];
 
@@ -29,11 +28,11 @@ const AccountRequests = ({ users }: Props) => {
         <>
           <TableCell className="p-4 flex items-center gap-4">
             {/* Name and Email */}
-              <Avatar>
-                <AvatarFallback className="bg-amber-100">
-                  {getInitials(user?.fullName || "IN")}
-                </AvatarFallback>
-              </Avatar>
+            <Avatar>
+              <AvatarFallback className="bg-amber-100">
+                {getInitials(user?.fullName || "IN")}
+              </AvatarFallback>
+            </Avatar>
 
             <div className="flex flex-col max-md:hidden">
               <h1 className="text-sm font-semibold">{user.fullName}</h1>
@@ -52,7 +51,25 @@ const AccountRequests = ({ users }: Props) => {
             <ViewCard type="eye" universityCard={user.universityCard} />
           </TableCell>
           <TableCell>
-            <Action />
+            {user.status === "PENDING" && (
+              <span className="p-2 bg-blue-100/10 text-blue-800 rounded-lg font-semibold">
+                Pending
+              </span>
+            )}
+
+            {user.status === "APPROVED" && (
+              <span className="p-2 bg-green-100 text-green-800 rounded-lg font-semibold">
+                Approved
+              </span>
+            )}
+            {user.status === "REJECTED" && (
+              <span className="p-2 bg-red-400/10 text-red-800 rounded-lg font-semibold">
+                Rejected
+              </span>
+            )}
+          </TableCell>
+          <TableCell>
+            <Action userId={user.id} status={user.status ?? null} />
           </TableCell>
         </>
       )}

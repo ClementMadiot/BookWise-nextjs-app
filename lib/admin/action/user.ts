@@ -58,3 +58,20 @@ export const countUserBorrowedBooks = async (userId: string) => {
     return 0; // Return 0 in case of an error
   }
 };
+
+// Change user's status 
+export const changeUserStatus = async (userId: string, status: string) => {
+  try {
+    // Validate the status value
+    if (!["PENDING", "APPROVED", "REJECTED"].includes(status)) {
+      throw new Error("Invalid status value");
+    }
+    // Update the user's status in the database
+    await db.update(users).set({ status: status as "PENDING" | "APPROVED" | "REJECTED" }).where(eq(users.id, userId));
+    return { success: true };
+  } catch (error) {
+    console.error("Error changing user status:", error);
+    return { success: false, error: "Failed to change user status" };
+    
+  }
+}
