@@ -22,7 +22,7 @@ const BookCard = ({
     isLoanedBook = true;
   }
   // Convert the coverColor to rgba with 30% opacity
-  const backgroundColorWithOpacity = `${coverColor}4D`; // 30% opacity in hex is 4D
+  const backgroundColorWithOpacity = `${coverColor}4D`;
   return (
     <li className={cn(isLoanedBook && "xs:w-66 w-full gradient-vertical rounded-2xl py-4")}>
       <Link

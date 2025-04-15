@@ -61,7 +61,7 @@ const page = async () => {
           <TableCell className="!p-2 text-center">
             <div className="inline-flex gap-2">
               <BookEdit id={book.id} />
-              <DeleteBtn type="book" id={book.id} />
+              <DeleteBtn id={book.id} type="book" message="book"/>
             </div>
           </TableCell>
         </>

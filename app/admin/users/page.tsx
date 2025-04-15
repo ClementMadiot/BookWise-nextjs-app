@@ -82,7 +82,7 @@ const page = async () => {
             </TableCell>
             {/* Action */}
             <TableCell className="p-4">
-              <DeleteBtn id={allUsers[0].id} />
+              <DeleteBtn id={allUsers[0].id} type="user" message="account" />
             </TableCell>
           </>
         )}

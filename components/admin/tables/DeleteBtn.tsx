@@ -1,22 +1,35 @@
 "use client";
 
-
-import { deleteBook, deleteUser } from "@/lib/admin/action/user";
-import Image from "next/image";
 import React, { useState } from "react";
+import Image from "next/image";
+// Components
+import { deleteBook, deleteUser } from "@/lib/admin/action/user";
 import { toast } from "sonner";
+// Alert Dialog
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Props {
   id: string;
-  type?: "user" | 'book';
+  type: "user" | "book";
+  message: string;
 }
 
-const DeleteBtn = ({ id, type }: Props) => {
+const DeleteBtn = ({ id, type, message }: Props) => {
   const [deleting, setDeleting] = useState(false);
-  
+
   const handleDelete = async () => {
     console.log(`Delete user with ID: ${id}`);
-    if(type === "user"){
+    if (type === "user") {
       try {
         const result = await deleteUser(id);
         if (result.success) {
@@ -31,11 +44,11 @@ const DeleteBtn = ({ id, type }: Props) => {
         console.error("Error deleting user:", error);
         setDeleting(false);
       }
-    } else if(type === "book"){
-      console.log("Deleting book with ID:", id);    
+    } else if (type === "book") {
+      console.log("Deleting book with ID:", id);
       try {
-        const result = await deleteBook(id)
-        if(result.success){
+        const result = await deleteBook(id);
+        if (result.success) {
           toast.success("Book deleted successfully");
           // Optionally, refresh the page or update the UI
           window.location.reload();
@@ -45,24 +58,39 @@ const DeleteBtn = ({ id, type }: Props) => {
         }
       } catch (error) {
         console.error("Error deleting book:", error);
-        setDeleting(false);        
+        setDeleting(false);
       }
     }
     setDeleting(true);
   };
   return (
-    <button
-      onClick={handleDelete}
-      className="cursor-pointer mx-auto flex justify-center"
-      disabled={deleting}
-    >
-      <Image
-        src="/icons/admin/trash.svg"
-        alt="Delete User"
-        width={20}
-        height={20}
-      />
-    </button>
+    <AlertDialog>
+      <AlertDialogTrigger>
+        {" "}
+        <button className="cursor-pointer mx-auto flex justify-center">
+          <Image
+            src="/icons/admin/trash.svg"
+            alt="Delete User"
+            width={20}
+            height={20}
+          />
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription className="text-dark-700">
+          This action is irreversible. Deleting this {" "}{message} will permanently remove all associated data from our servers. Please proceed with caution.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete} disabled={deleting} className="bg-red-400 text-light-300 shadow-xs hover:bg-red-400/90">
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

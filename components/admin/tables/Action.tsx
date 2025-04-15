@@ -73,14 +73,14 @@ const Action = ({
       {/* Approve Account Dialog */}
       <Dialog>
         <DialogTrigger asChild>
-          <button className="cursor-pointer bg-green-800/60 rounded-full">
+          <div className="cursor-pointer bg-green-800/60 rounded-full">
             <Image
               src={"/icons/admin/tick.svg"}
               alt="Reject Account"
               width={20}
               height={20}
             />
-          </button>
+          </div>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] flex justify-center flex-col gap-4">
           <DialogHeader className="flex flex-col gap-4 justify-center items-center">
@@ -115,14 +115,14 @@ const Action = ({
       {/* Reject Account Dialog */}
       <Dialog>
         <DialogTrigger asChild>
-          <button className="cursor-pointer">
+          <div className="cursor-pointer">
             <Image
               src={"/icons/admin/close-circle.svg"}
               alt="Reject Account"
               width={20}
               height={20}
             />
-          </button>
+          </div>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] flex justify-center flex-col gap-4">
           <DialogHeader className="flex flex-col gap-4 justify-center items-center">
