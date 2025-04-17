@@ -12,7 +12,7 @@ import { Book } from "@/types";
 const tableHeader = ["Book Title", "Author", "Genre", "Date Created", "Action"];
 
 // Utility function to truncate text
-const truncateText = (text: string, maxLength: number) => {
+export const truncateText = (text: string, maxLength: number) => {
   return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 };
 

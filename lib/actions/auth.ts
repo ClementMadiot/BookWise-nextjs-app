@@ -12,6 +12,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { workflowClient } from "../workflow";
 import config from "../config";
+import { AuthCredentials } from "@/types";
 
 export const signInWithCredentails = async (
   params: Pick<AuthCredentials, "email" | "password">

@@ -5,6 +5,7 @@ import BorrowBook from "@/components/BorrowBook";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
+import { Book } from "@/types";
 
 interface Props extends Book {
   userId: string;

@@ -35,3 +35,14 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # BookWise-nextjs-app
+
+Added this command to the package.json file to run the drizzle kit commands
+    "db:generate": "npx drizzle-kit generate",
+    "db:migrate": "npx drizzle-kit migrate",
+    "db:studio": "npx drizzle-kit studio"
+
+command seed to run the seed file
+    "seed": "npx tsx database/seed.ts"
+
+    # tech
+- react-colorful(https://www.npmjs.com/package/react-colorful)A tiny color picker component for React and Preact apps

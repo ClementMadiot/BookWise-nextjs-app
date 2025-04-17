@@ -22,6 +22,7 @@ import FileUpload from "../../FileUpload";
 import ColorPicker from "./ColorPicker";
 import { createBook, updateBook } from "@/lib/admin/action/book";
 import { toast } from "sonner";
+import { Book } from "@/types";
 
 interface Props extends Partial<Book> {
   type?: "create" | "update";

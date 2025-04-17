@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 import ReturnBook from "./ReturnBook";
 import { usePathname } from "next/navigation";
+import { Book } from "@/types";
 
 const BookCard = ({
   id,

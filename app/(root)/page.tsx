@@ -3,6 +3,7 @@ import BookList from "@/components/BookList";
 import BookOverview from "@/components/BookOverview";
 import { db } from "@/database/drizzle";
 import { books } from "@/database/schema";
+import { Book } from "@/types";
 import { desc } from "drizzle-orm";
 
 const Home = async () => {

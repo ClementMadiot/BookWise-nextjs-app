@@ -1,13 +1,13 @@
+import { db } from "@/database/drizzle";
+import { eq } from "drizzle-orm";
+import { books, borrowRecords, users } from "@/database/schema";
 import Role from "@/components/admin/tables/Role";
+import { BorrowRecord } from "@/types";
+import { borrowStatuses } from "@/constants";
 import TableComponent from "@/components/admin/tables/TableComponent";
 import BookCover from "@/components/BookCover";
 import { TableCell } from "@/components/ui/table";
-import { borrowStatuses } from "@/constants";
-import { db } from "@/database/drizzle";
-import { books, borrowRecords, users } from "@/database/schema";
-import { BorrowRecord } from "@/types";
-import { eq } from "drizzle-orm";
-import React from "react";
+import { truncateText } from "../books/page";
 
 const tableHeader = [
   "Book",
@@ -43,7 +43,7 @@ const page = async () => {
     ...record,
     borrowDate: record.borrowDate ? new Date(record.borrowDate) : null,
     dueDate: record.dueDate ? new Date(record.dueDate) : null,
-    returnDate: record.returnDate ? new Date(record.returnDate) : null,
+    returnDate: record.returnDate ? new Date(record.returnDate) : new Date(),
   })) as BorrowRecord[];
   return (
     <section className="w-full rounded-2xl bg-white p-4">
@@ -61,7 +61,8 @@ const page = async () => {
                   coverImage={record.coverUrl || ""}
                   variant={"extraSmall"}
                 />
-                <h1 className="text-sm font-semibold">{record.title}</h1>
+                <h1 className="text-sm font-semibold">
+                  {truncateText(record.title, 20)}</h1>
               </div>
             </TableCell>
             <TableCell className="admin-cell">
@@ -86,10 +87,16 @@ const page = async () => {
                   day: "2-digit",
                   year: "numeric",
                 })
-                .replace(",", " \u00A0")}
+                .replace(",", "")}
             </TableCell>
             <TableCell className="admin-cell ">
-              {record.returnDate?.toLocaleDateString()}
+              {record.returnDate
+                ?.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                })
+                .replace(",", "")}
             </TableCell>
             <TableCell className="admin-cell ">
               {record.dueDate
@@ -98,7 +105,7 @@ const page = async () => {
                   day: "2-digit",
                   year: "numeric",
                 })
-                .replace(",", " \u00A0")}
+                .replace(",", "")}
             </TableCell>
           </>
         )}

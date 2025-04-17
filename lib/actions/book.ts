@@ -4,6 +4,7 @@ import { db } from "@/database/drizzle";
 import { books, borrowRecords } from "@/database/schema";
 import { eq, and } from "drizzle-orm";
 import dayjs from "dayjs";
+import { BorrowBookParams } from "@/types";
 
 export const borrowBook = async (params: BorrowBookParams) => {
   const { userId, bookId } = params;
@@ -78,18 +79,18 @@ export const returnBook = async (params: BorrowBookParams) => {
   const { userId, bookId } = params;
 
   try {
-    // Delete the borrow record
-    const deletedRecord = await db
-      .delete(borrowRecords)
+    // Return Date is the current date
+    const returnDate = new Date().toDateString();
+
+    // Update the borrow record
+    const updatedRecord = await db
+      .update(borrowRecords)
+      .set({ status: "RETURNED", returnDate })
       .where(
-        and(
-          eq(borrowRecords.userId, userId),
-          eq(borrowRecords.bookId, bookId),
-          eq(borrowRecords.status, "BORROWED")
-        )
+        and(eq(borrowRecords.userId, userId), eq(borrowRecords.bookId, bookId))
       );
 
-    if (!deletedRecord.rowCount) {
+    if (!updatedRecord.rowCount) {
       return {
         success: false,
         error: "No borrow record found for this book",
@@ -112,9 +113,9 @@ export const returnBook = async (params: BorrowBookParams) => {
 
     // Increment the available copies of the book
     await db
-    .update(books)
-    .set({ availableCopies: book[0].availableCopies + 1 })
-    .where(eq(books.id, bookId));
+      .update(books)
+      .set({ availableCopies: book[0].availableCopies + 1 })
+      .where(eq(books.id, bookId));
 
     return {
       success: true,

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { IKVideo, ImageKitProvider } from "imagekitio-next";
 import config from "@/lib/config";
+import { Book } from "@/types";
 
 const BookDetails = ({
   id,
