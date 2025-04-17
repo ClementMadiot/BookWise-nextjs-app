@@ -6,6 +6,7 @@ import DeleteBtn from "@/components/admin/tables/DeleteBtn";
 import TableComponent from "@/components/admin/tables/TableComponent";
 import BookCover from "@/components/BookCover";
 import { TableCell } from "@/components/ui/table";
+import { Book } from "@/types";
 
 
 const tableHeader = ["Book Title", "Author", "Genre", "Date Created", "Action"];
@@ -19,8 +20,7 @@ const page = async () => {
   const allBooks = (await db
     .select()
     .from(books)).map(book => ({
-    ...book,
-    createdAt: book.createdAt ? book.createdAt.toISOString() : null,  
+    ...book,  
     })) as Book[];
 
     if(allBooks.length < 1) return null;
@@ -51,11 +51,11 @@ const page = async () => {
           {/* Date Joined */}
           <TableCell className="admin-cell">
             {book.createdAt
-              ? new Date(book.createdAt).toLocaleDateString("en-US", {
+              ? book.createdAt.toLocaleDateString("en-US", {
                   month: "short",
                   day: "2-digit",
                   year: "numeric",
-                })
+                }).replace(",", " \u00A0")
               : "N/A"}
           </TableCell>
           <TableCell className="!p-2 text-center">

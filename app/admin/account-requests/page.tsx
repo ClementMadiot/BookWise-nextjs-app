@@ -7,6 +7,7 @@ import TableComponent from "@/components/admin/tables/TableComponent";
 import ViewCard from "@/components/admin/tables/ViewCard";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { TableCell } from "@/components/ui/table";
+import { User } from "@/types";
 
 const tableHeader = [
   "Name",
@@ -46,11 +47,15 @@ const page = async () => {
               </div>
             </TableCell>
             <TableCell className="admin-cell ">
-              {new Date(user.createdAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "2-digit",
-                year: "numeric",
-              })}
+              {user.createdAt
+                ? new Date(user.createdAt)
+                    .toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "2-digit",
+                      year: "numeric",
+                    })
+                    .replace(",", " \u00A0")
+                : "N/A"}
             </TableCell>
             <TableCell className="admin-cell ">{user.universityId}</TableCell>
             <TableCell className="admin-cell ">

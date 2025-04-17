@@ -36,7 +36,8 @@ const Sidebar = ({ session }: { session: Session }) => {
                 <div
                   className={cn(
                     "link hover:!bg-light-100/40",
-                    isSelected && "bg-primary-admin hover:!bg-primary-admin shadow-sm"
+                    isSelected &&
+                      "bg-primary-admin hover:!bg-primary-admin shadow-sm"
                   )}
                 >
                   <div className="relative size-5">
@@ -62,11 +63,13 @@ const Sidebar = ({ session }: { session: Session }) => {
       </div>
 
       <div className="user justify-center items-center">
-        <Avatar>
-          <AvatarFallback className="bg-amber-100">
-            {getInitials(session?.user?.name || "IN")}
-          </AvatarFallback>
-        </Avatar>
+        <Link href="/my-profile">
+          <Avatar>
+            <AvatarFallback className="bg-amber-100">
+              {getInitials(session?.user?.name || "IN")}
+            </AvatarFallback>
+          </Avatar>
+        </Link>
         <div className="flex flex-col max-md:hidden">
           <p className="font-semibold text-dark-200">{session?.user?.name}</p>
           <p className="text-light-500 text-xs">{session?.user?.email}</p>

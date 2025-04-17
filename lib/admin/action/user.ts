@@ -23,19 +23,29 @@ export const deleteBook = async (bookId: string) => {
     return { success: false, error: "Failed to delete book" };
   }
 }
-
+// Role update function
 export const updateUserRole = async (userId: string, role: string) => {
   try {
-    if (role !== "ADMIN" && role !== "USER") {
-      throw new Error("Invalid role value");
-    }
-    await db.update(users).set({ role }).where(eq(users.id, userId));
+    await db.update(users).set({ role: role as "USER" | "ADMIN" }).where(eq(users.id, userId));
     return { success: true };
   } catch (error) {
     console.error("Error updating user role:", error);
     return { success: false, error: "Failed to update user role" };
   }
 };
+
+export const updateStatusBorrow = async (id: string, status: string) => {
+  try {
+    await db
+    .update(borrowRecords)
+    .set({ status: status as "BORROWED" | "RETURNED" })
+    .where(eq(borrowRecords.id, id));
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating borrow status:", error);
+    return { success: false, error: "Failed to update borrow status" };
+  }
+}
 
 // Count how many books a user has borrowed
 export const countUserBorrowedBooks = async (userId: string) => {

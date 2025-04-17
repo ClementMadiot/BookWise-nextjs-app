@@ -8,6 +8,8 @@ import Role from "@/components/admin/tables/Role";
 import ViewCard from "@/components/admin/tables/ViewCard";
 import DeleteBtn from "@/components/admin/tables/DeleteBtn";
 import BorrowCount from "@/components/admin/tables/BorrowCount";
+import { userRoles } from "@/constants";
+import { User } from "@/types";
 
 const tableHeader = [
   "Name",
@@ -55,22 +57,25 @@ const page = async () => {
             </TableCell>
             {/* Date Joined */}
             <TableCell className="admin-cell ">
-              {new Date(user.createdAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "2-digit",
-                year: "numeric",
-              })}
+              {user.createdAt
+                ? new Date(user.createdAt)
+                    .toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "2-digit",
+                      year: "numeric",
+                    })
+                    .replace(",", " \u00A0")
+                : "N/A"}
             </TableCell>
 
             {/* Role */}
             <TableCell className="admin-cell ">
-              <Role userId={user.id} role={user.role} />
+              <Role id={user.id} role={user.role} array={userRoles} />
             </TableCell>
 
             {/* Books Borrowed */}
             <TableCell className="admin-cell ">
               <BorrowCount users={user.id} />
-              
             </TableCell>
 
             {/* University ID No */}

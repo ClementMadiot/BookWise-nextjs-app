@@ -1,3 +1,4 @@
+import { Role } from '@/components/admin/tables/Role';
 interface Book {
   id: string;
   title: string;
@@ -53,4 +54,22 @@ interface User {
   createdAt: string;
   status?: string;
   booksBorrowed?: number;
+}
+
+interface BorrowRecord {
+  id: string;
+  userId: string;
+  bookId: string;
+  borrowDate: Date;
+  dueDate: Date;
+  returnDate: Date | null;
+  status: string;
+  createdAt: Date | null;
+  book: Book;
+  user: User;
+  title: string;
+  coverColor: string;
+  coverUrl: string;
+  fullName: string;
+  email: string;
 }

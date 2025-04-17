@@ -70,13 +70,12 @@ const Action = ({
   };
   return (
     <div className="flex items-center gap-2">
-      {/* Approve Account Dialog */}
       <Dialog>
         <DialogTrigger asChild>
           <div className="cursor-pointer bg-green-800/60 rounded-full">
             <Image
               src={"/icons/admin/tick.svg"}
-              alt="Reject Account"
+              alt="Approve Account"
               width={20}
               height={20}
             />
@@ -114,7 +113,7 @@ const Action = ({
 
       {/* Reject Account Dialog */}
       <Dialog>
-        <DialogTrigger asChild>
+        <DialogTrigger asChild className="cursor-pointer">
           <div className="cursor-pointer">
             <Image
               src={"/icons/admin/close-circle.svg"}
@@ -151,7 +150,7 @@ const Action = ({
                 variant="destructive"
                 type="submit"
               >
-                Denis & Notify Student
+                Deny & Notify Student
               </Button>
             </DialogClose>
           </DialogFooter>

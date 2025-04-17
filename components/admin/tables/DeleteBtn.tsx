@@ -65,27 +65,31 @@ const DeleteBtn = ({ id, type, message }: Props) => {
   };
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger className="cursor-pointer mx-auto flex justify-center">
         {" "}
-        <button className="cursor-pointer mx-auto flex justify-center">
-          <Image
-            src="/icons/admin/trash.svg"
-            alt="Delete User"
-            width={20}
-            height={20}
-          />
-        </button>
+        <Image
+          src="/icons/admin/trash.svg"
+          alt="Delete User"
+          width={20}
+          height={20}
+        />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription className="text-dark-700">
-          This action is irreversible. Deleting this {" "}{message} will permanently remove all associated data from our servers. Please proceed with caution.
+            This action is irreversible. Deleting this {message} will
+            permanently remove all associated data from our servers. Please
+            proceed with caution.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete} disabled={deleting} className="bg-red-400 text-light-300 shadow-xs hover:bg-red-400/90">
+          <AlertDialogAction
+            onClick={handleDelete}
+            disabled={deleting}
+            className="bg-red-400 text-light-300 shadow-xs hover:bg-red-400/90"
+          >
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>
