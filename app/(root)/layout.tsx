@@ -12,6 +12,17 @@ const layout = async ({ children }: { children: ReactNode }) => {
 
   if (!session) redirect("/sign-in");
 
+  // Fetch the user role
+  const [user] = await db
+  .select({
+    role: users.role,})
+    .from(users)
+    .where(eq(users.id, session?.user?.id!))
+    .limit(1);
+
+    if (!user) return;
+
+
   // update user's last activity
   after(async () => {
     if (!session?.user?.id) return;
@@ -35,7 +46,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
   return (
     <main className="root-container">
       <div className="max-w-7xl lg:min-w-2xl mx-auto">
-        <Header session={session} />
+        <Header session={session} admin={user.role ?? "user"} />
         <div className="mt-20 pb-20">{children}</div>
       </div>
     </main>

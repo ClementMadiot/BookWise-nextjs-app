@@ -27,7 +27,7 @@ const page = async () => {
 
   if (!user) return null;
 
-  // Fetch borrowed books with status "BORROWED"
+  // Fetch borrowed books
   const borrowedBooks = await db
     .select({
       id: books.id,
@@ -42,30 +42,22 @@ const page = async () => {
       availableCopies: books.availableCopies,
       videoUrl: books.videoUrl,
       summary: books.summary,
+      status: borrowRecords.status,
       borrowDate: borrowRecords.borrowDate,
       dueDate: borrowRecords.dueDate,
       returnDate: borrowRecords.returnDate,
-      status: borrowRecords.status,
     })
     .from(borrowRecords)
     .innerJoin(books, eq(borrowRecords.bookId, books.id))
-    .where(
-      eq(borrowRecords.userId, session.user.id) &&
-        eq(borrowRecords.status, "BORROWED")
-    );
-
-  // Handle empty or single-item arrays
-  if (!borrowedBooks.length) {
-    return (
-      <p className="font-bebas-neue text-4xl text-light-100 m-auto">
-        You have not borrowed any books yet.
-      </p>
-    );
-  }
+    .where(eq(borrowRecords.userId, session.user.id));
 
   return (
     <>
-      <section className="flex flex-col justify-center lg:flex-row lg:justify-between items-stretch lg:items-start gap-8">
+      <section
+        className={`flex flex-col justify-center lg:flex-row lg:justify-between items-stretch gap-8 ${
+          borrowedBooks.length > 0 ? "lg:items-start" : "lg:items-center"
+        }`}
+      >
         <div className="max-w-lg mx-auto lg:max-w-none">
           <BookProfile
             fullName={user.fullName}
@@ -77,16 +69,25 @@ const page = async () => {
           />
         </div>
         <div className="flex-1">
-          <BookList
-            title="Borrowed Books"
-            books={borrowedBooks.map((book) => ({
-              ...book,
-              createdAt: new Date(book.borrowDate), // Ensure borrowDate is a Date object
-            }))}
-            userId={session?.user?.id}
-            containerClassName="lg:justify-end"
-            listBookClassName="justify-center lg:justify-start"
-          />
+          {borrowedBooks.length > 0 ? (
+            <BookList
+              title="Borrowed Books"
+              books={borrowedBooks.map((book) => ({
+                ...book,
+                createdAt: new Date(book.borrowDate),
+                borrowDate: book.borrowDate ? new Date(book.borrowDate) : null,
+                dueDate: book.dueDate ? new Date(book.dueDate) : null,
+                returnDate: book.returnDate ? new Date(book.returnDate) : null,
+              }))}
+              userId={session?.user?.id}
+              containerClassName="lg:justify-end"
+              listBookClassName="justify-center lg:justify-start"
+            />
+          ) : (
+            <p className="font-bebas-neue text-4xl text-light-100 text-center flex justify-center mt-8 lg:mt-0">
+              You have not borrowed any books yet
+            </p>
+          )}
         </div>
       </section>
     </>

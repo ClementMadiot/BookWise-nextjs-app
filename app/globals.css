@@ -58,6 +58,7 @@
   --color-red-400: #F46F70;
   --color-red-500: #E27233;
   --color-red-800: #EF3A4B;
+  --color-red-900: #FF6C6F;
   --color-blue-100: #0089F1;
   --color-rose-100: #FDF2FA;
   --color-rose-200: #C11574;
@@ -615,6 +616,6 @@
   }
 
   .admin-cell {
-    @apply !text-dark-200 font-medium text-sm 
+    @apply !text-dark-200 font-medium text-sm p-4
   }
 }

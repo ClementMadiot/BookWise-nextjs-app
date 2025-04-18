@@ -46,3 +46,5 @@ command seed to run the seed file
 
     # tech
 - react-colorful(https://www.npmjs.com/package/react-colorful)A tiny color picker component for React and Preact apps
+
+- Error message on borrow book for user not approved, allow to borrow book to display all features for approved users

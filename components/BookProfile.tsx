@@ -44,9 +44,12 @@ const BookProfile = ({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <p className="text-light-100 text-xs">
-              status : <span className="italic text-white">{status}</span>
-            </p>
+            {status === "APPROVED" && (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/verified.svg" alt="Verified" width={16} height={16} />
+                <p className="text-light-100 text-sm">Verified Student</p>
+              </div>
+            )}
             <p className="text-white text-xl font-semibold">{fullName}</p>
             <p className="text-light-100 text-sm">{email}</p>
           </div>

@@ -74,12 +74,12 @@ const page = async () => {
             </TableCell>
 
             {/* Books Borrowed */}
-            <TableCell className="admin-cell ">
+            <TableCell className="admin-cell">
               <BorrowCount users={user.id} />
             </TableCell>
 
             {/* University ID No */}
-            <TableCell className="admin-cell ">{user.universityId}</TableCell>
+            <TableCell className="admin-cell">{user.universityId}</TableCell>
 
             {/* University ID Card */}
             <TableCell className="p-4 !text-dark-200 font-medium">
