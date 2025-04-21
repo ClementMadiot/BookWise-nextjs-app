@@ -82,7 +82,7 @@ const Sidebar = ({ session }: { session: Session }) => {
               alt="Logout"
               width={20}
               height={20}
-            />
+              />
           </Button>
       </div>
     </div>

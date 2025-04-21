@@ -11,7 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
-import { updateStatusBorrow, updateUserRole } from "@/lib/admin/action/user";
+import { updateUserRole } from "@/lib/admin/action/user";
+import { updateStatusBorrow } from "@/lib/actions/book";
+
 
 interface RoleProps {
   id: string;

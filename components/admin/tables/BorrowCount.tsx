@@ -1,5 +1,5 @@
 "use client";
-import { countUserBorrowedBooks } from "@/lib/admin/action/user";
+import { countUserBorrowedBooks } from "@/lib/actions/book";
 import React, { useEffect, useState } from "react";
 
 const BorrowCount = ({ users }: { users: string }) => {

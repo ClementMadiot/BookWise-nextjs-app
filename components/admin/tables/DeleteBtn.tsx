@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 // Components
-import { deleteBook, deleteUser } from "@/lib/admin/action/user";
+import {  deleteUser } from "@/lib/admin/action/user";
+import { deleteBook } from "@/lib/actions/book";
+
 import { toast } from "sonner";
 // Alert Dialog
 import {

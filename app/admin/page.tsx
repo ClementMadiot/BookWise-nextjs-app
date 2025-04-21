@@ -9,56 +9,69 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { db } from "@/database/drizzle";
 import { books, borrowRecords, users } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import Image from "next/image";
 import BookCover from "@/components/BookCover";
 import { truncateText } from "./books/page";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
+import { fetchCounts } from "@/lib/admin/action/user";
 
 const page = async () => {
-  const dashboard = (
-    await db
-      .select({
-        coverUrl: books.coverUrl,
-        coverColor: books.coverColor,
-        title: books.title,
-        author: books.author,
-        createdAt: books.createdAt,
-        genre: books.genre,
-        borrowDate: borrowRecords.borrowDate,
-        id: borrowRecords.id,
-        userId: borrowRecords.userId,
-        bookId: borrowRecords.bookId,
-        fullName: users.fullName,
-        email: users.email,
-      })
-      .from(books)
-      .leftJoin(borrowRecords, eq(books.id, borrowRecords.bookId))
-      .leftJoin(users, eq(users.id, borrowRecords.userId))
-  ).map((record) => ({
-    ...record,
-    borrowDate: record.borrowDate ? new Date(record.borrowDate) : null,
-    createdAt: record.createdAt ? new Date(record.createdAt) : null,
-  }));
+  // Fetching all total counts
+  const borrowedBooksCount = await fetchCounts(borrowRecords);
+  const totalUsersCount = await fetchCounts(users);
+  const totalBooksCount = await fetchCounts(books);
 
   const dashboardHeader = [
     {
       title: "Borrowed Books",
-      value: "145",
+      value: borrowedBooksCount,
     },
     {
       title: "Total Users",
-      value: "317",
+      value: totalUsersCount,
     },
     {
       title: "Total Books",
-      value: "163",
+      value: totalBooksCount,
     },
   ];
+
+  const bookRequests = await db
+    .select()
+    .from(books)
+    .orderBy(desc(books.createdAt))
+    .limit(5);
+
+  const borrowRequests = await db
+    .select({
+      bookId: borrowRecords.bookId,
+      borrowDate: borrowRecords.borrowDate,
+      coverColor: books.coverColor,
+      coverUrl: books.coverUrl,
+      title: books.title,
+      author: books.author,
+      genre: books.genre,
+      fullName: users.fullName,
+    })
+    .from(borrowRecords)
+    .where(eq(borrowRecords.status, "BORROWED"))
+    .leftJoin(books, eq(borrowRecords.bookId, books.id))
+    .leftJoin(users, eq(users.id, borrowRecords.userId))
+    .orderBy(desc(borrowRecords.createdAt))
+    .limit(4);
+
+  const accountRequests = await db
+    .select()
+    .from(users)
+    .where(eq(users.role, "USER"))
+    .orderBy(desc(users.createdAt))
+    .limit(3);
+
   return (
-    <section>
+    <section className="flex flex-col h-full">
       <article className="flex justify-center gap-4 mb-8">
         {dashboardHeader.map((header, index) => (
           <Card key={index} className="p-4 flex-1 flex flex-col gap-4">
@@ -71,9 +84,11 @@ const page = async () => {
       </article>
       <ResizablePanelGroup direction="horizontal" className="gap-4">
         <ResizablePanel>
-          <div className="flex flex-col gap-8">
-            {/* borrow request  */}
-            <Card className="p-4 flex-1">
+          <div className="flex flex-col gap-4 h-full">
+            {/* Borrow Requests */}
+            <Card className="p-4 flex-1 relative !shadow-none">
+              {/* gradient Overlay 
+              <div className="absolute bottom-0 left-0 w-full h-25 bg-gradient-to-t from-light-300 via-light-300 to-transparent opacity-70 pointer-events-none z-10" /> */}
               <div className="flex items-center justify-between">
                 <h2 className="text-dark-400 text-xl font-semibold">
                   Borrow Requests
@@ -83,25 +98,28 @@ const page = async () => {
                 </Button>
               </div>
               <div className="flex flex-col gap-4 mt-4">
-                {dashboard.slice(0, 3).map((record) => (
+                {borrowRequests.map((record) => (
                   <Link
-                    key={record.id}
+                    key={record.bookId}
                     href={`admin/books/${record.bookId}`}
                     className="flex w-full gap-4 items-center p-3 rounded-lg bg-light-300"
                   >
                     <BookCover
-                      coverColor={record.coverColor}
-                      coverImage={record.coverUrl}
+                      coverColor={record.coverColor || "#FFFFFF"}
+                      coverImage={record.coverUrl || ""}
                       variant={"small"}
                     />
-                    <div className="flex flex-col md:items-center  md:flex-row md:justify-between w-full">
+                    <div className="flex flex-col md:items-center md:flex-row md:justify-between w-full">
                       <div className="flex flex-col gap-1">
                         <p className="font-semibold text-[16px] text-dark-400">
-                          {truncateText(record.title, 30)}
+                          {truncateText(record.title || "", 30)}
                         </p>
                         <p className="text-light-900 text-sm">
-                          By {record.author.split(" ").slice(0, 2).join(" ")} ▪{" "}
-                          {record.genre}
+                          By{" "}
+                          {(record.author
+                            ? record.author.split(" ").slice(0, 2).join(" ")
+                            : "") || ""}{" "}
+                          ▪ {record.genre}
                         </p>
                         <div className="text-dark-200 text-xs flex gap-2 ">
                           <p className="flex gap-2">
@@ -124,22 +142,13 @@ const page = async () => {
                           </div>
                         </div>
                       </div>
-                      <div className="p-2 flex justify-center items-center">
-                        <Image
-                          src="/icons/eye.svg"
-                          alt="eye"
-                          width={20}
-                          height={20}
-                          className="text-dark-400"
-                        />
-                      </div>
                     </div>
                   </Link>
                 ))}
               </div>
             </Card>
-            {/* Account request  */}
-            <Card className="w-full p-4 flex-1 flex flex-col gap-2">
+            {/* Account Requests */}
+            <Card className="w-full p-4 flex-1 flex flex-col gap-2 relative !shadow-none">
               <div className="flex items-center justify-between">
                 <h2 className="text-dark-400 text-xl font-semibold">
                   Account Requests
@@ -148,14 +157,14 @@ const page = async () => {
                   <Link href="/admin/account-requests">View all</Link>
                 </Button>
               </div>
-              <div className="grid grid-cols-3 gap-4">
-                {dashboard.slice(0, 6).map((record) => (
+              <div className="grid grid-cols-3 gap-2">
+                {accountRequests.map((record) => (
                   <div
                     key={record.id}
                     className="flex flex-col items-center gap-4 p-2 bg-light-300 rounded-lg"
                   >
                     <Avatar>
-                      <AvatarFallback className="bg-amber-100">
+                      <AvatarFallback className="bg-amber-100 p-2 px-3">
                         {getInitials(record?.fullName || "IN")}
                       </AvatarFallback>
                     </Avatar>
@@ -175,8 +184,8 @@ const page = async () => {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel>
-          {/* Recently added books */}
-          <Card className="p-4 flex-1 overflow-hidden">
+          {/* Recently Added Books */}
+          <Card className="p-4 flex-1 overflow-hidden h-full relative !shadow-none">
             <div className="flex items-center justify-between">
               <h2 className="text-dark-400 text-xl font-semibold">
                 Recently Added Books
@@ -203,10 +212,10 @@ const page = async () => {
                 </Link>
               </Button>
 
-              {dashboard.slice(0, 5).map((record) => (
+              {bookRequests.map((record) => (
                 <Link
                   key={record.id}
-                  href={`admin/books/${record.bookId}`}
+                  href={`admin/books/${record.id}`}
                   className="flex w-full gap-4 items-center p-3 rounded-lg "
                 >
                   <BookCover
@@ -232,8 +241,8 @@ const page = async () => {
                             height={16}
                             alt="calendar"
                           />{" "}
-                          {record.borrowDate
-                            ? record.borrowDate.toLocaleDateString("en-GB", {
+                          {record.createdAt
+                            ? record.createdAt.toLocaleDateString("en-GB", {
                                 day: "2-digit",
                                 month: "2-digit",
                                 year: "2-digit",
@@ -241,16 +250,6 @@ const page = async () => {
                             : "N/A"}
                         </div>
                       </div>
-                    </div>
-
-                    <div className="p-2 flex justify-center items-center">
-                      <Image
-                        src="/icons/eye.svg"
-                        alt="eye"
-                        width={20}
-                        height={20}
-                        className="text-dark-400"
-                      />
                     </div>
                   </div>
                 </Link>

@@ -1,8 +1,8 @@
 "use server";
 
 import { db } from "@/database/drizzle";
-import { books, borrowRecords, users } from "@/database/schema";
-import { eq, sql } from "drizzle-orm";
+import { users } from "@/database/schema";
+import {  eq, sql, Table } from "drizzle-orm";
 
 export const deleteUser = async (userId: string) => {
   try {
@@ -14,15 +14,6 @@ export const deleteUser = async (userId: string) => {
   }
 };
 
-export const deleteBook = async (bookId: string) => {
-  try {
-    await db.delete(books).where(eq(books.id, bookId));
-    return { success: true };
-  } catch (error) {
-    console.error("Error deleting book:", error);
-    return { success: false, error: "Failed to delete book" };
-  }
-}
 // Role update function
 export const updateUserRole = async (userId: string, role: string) => {
   try {
@@ -31,41 +22,6 @@ export const updateUserRole = async (userId: string, role: string) => {
   } catch (error) {
     console.error("Error updating user role:", error);
     return { success: false, error: "Failed to update user role" };
-  }
-};
-
-export const updateStatusBorrow = async (id: string, status: string) => {
-  try {
-    await db
-    .update(borrowRecords)
-    .set({ status: status as "BORROWED" | "RETURNED" })
-    .where(eq(borrowRecords.id, id));
-    return { success: true };
-  } catch (error) {
-    console.error("Error updating borrow status:", error);
-    return { success: false, error: "Failed to update borrow status" };
-  }
-}
-
-// Count how many books a user has borrowed
-export const countUserBorrowedBooks = async (userId: string) => {
-  try {
-    const result = await db
-      .select({
-        borrowedBooksCount: sql<number>`COUNT(${borrowRecords.id})`,
-      })
-      .from(borrowRecords)
-      .where(
-        sql`${eq(borrowRecords.userId, userId)} AND ${eq(
-          borrowRecords.status,
-          "BORROWED"
-        )}`
-      );
-
-    return result[0]?.borrowedBooksCount || 0; // Return the count or 0 if no records
-  } catch (error) {
-    console.error("Error counting borrowed books:", error);
-    return 0; // Return 0 in case of an error
   }
 };
 
@@ -85,3 +41,18 @@ export const changeUserStatus = async (userId: string, status: string) => {
     
   }
 }
+
+// Fetch counts dynamically from the database
+export const fetchCounts = async (table: Table<any>) => {
+  try {
+    const result = await db
+      .select({ count: sql<number>`COUNT(*)` })
+      .from(table)
+      .then((result) => result[0]?.count || 0);
+
+    return result; // Return the count
+  } catch (error) {
+    console.error("Error fetching counts:", error);
+    return 0; // Return 0 in case of an error
+  }
+};

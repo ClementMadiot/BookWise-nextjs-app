@@ -1,11 +1,10 @@
-'use client'
+"use client";
 
 import { cn } from "@/lib/utils";
 import React from "react";
 import BookCoverSvg from "./BookCoverSvg";
 import { IKImage } from "imagekitio-next";
 import config from "@/lib/config";
-
 
 type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
 
@@ -40,7 +39,7 @@ const BookCover = ({
     >
       <BookCoverSvg coverColor={coverColor} />
       <div
-        className="absolute z-10"
+        className="absolute z-1"
         style={{ left: "12%", width: "87.5%", height: "88%" }}
       >
         <IKImage

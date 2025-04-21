@@ -2,7 +2,7 @@
 
 import { db } from "@/database/drizzle";
 import { books, borrowRecords } from "@/database/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 import dayjs from "dayjs";
 import { BorrowBookParams } from "@/types";
 
@@ -126,5 +126,52 @@ export const returnBook = async (params: BorrowBookParams) => {
       success: false,
       error: "An error occurred while returning the book",
     };
+  }
+};
+
+export const deleteBook = async (bookId: string) => {
+  try {
+    await db.delete(books).where(eq(books.id, bookId));
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    return { success: false, error: "Failed to delete book" };
+  }
+};
+
+// BORROW BOOKS
+
+export const updateStatusBorrow = async (id: string, status: string) => {
+  try {
+    await db
+    .update(borrowRecords)
+    .set({ status: status as "BORROWED" | "RETURNED" })
+    .where(eq(borrowRecords.id, id));
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating borrow status:", error);
+    return { success: false, error: "Failed to update borrow status" };
+  }
+}
+
+// Count how many books a user has borrowed
+export const countUserBorrowedBooks = async (userId: string) => {
+  try {
+    const result = await db
+      .select({
+        borrowedBooksCount: sql<number>`COUNT(${borrowRecords.id})`,
+      })
+      .from(borrowRecords)
+      .where(
+        sql`${eq(borrowRecords.userId, userId)} AND ${eq(
+          borrowRecords.status,
+          "BORROWED"
+        )}`
+      );
+
+    return result[0]?.borrowedBooksCount || 0; // Return the count or 0 if no records
+  } catch (error) {
+    console.error("Error counting borrowed books:", error);
+    return 0; // Return 0 in case of an error
   }
 };
