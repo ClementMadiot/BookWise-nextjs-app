@@ -24,6 +24,7 @@ const ReturnBook = ({ userId, bookId, coverColor = "#3A354E" }: Props) => {
         toast.success("Success", {
           description: "Book returned successfully",
         });
+        window.location.reload();
       } else {
         toast.error("Error", {
           description: "An error occurred while returning the book",

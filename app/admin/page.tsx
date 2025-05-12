@@ -18,6 +18,18 @@ import { AvatarFallback } from "@/components/ui/avatar";
 import { getInitials } from "@/lib/utils";
 import { fetchCounts } from "@/lib/admin/action/user";
 
+const NoPendingRequests: React.FC<{ img: string; h1: string; p: string }> = ({
+  img,
+  h1,
+  p,
+}) => (
+  <div className="flex flex-col items-center justify-center w-full h-full p-4 gap-4">
+    <Image src={img} alt={h1} width={195} height={145} />
+    <h1 className="text-xl font-semibold text-dark-100 ">{h1}</h1>
+    <p className="text-sm text-light-900">{p}</p>
+  </div>
+);
+
 const page = async () => {
   // Fetching all total counts
   const borrowedBooksCount = await fetchCounts(borrowRecords);
@@ -38,7 +50,7 @@ const page = async () => {
       value: totalBooksCount,
     },
   ];
-
+  
   const bookRequests = await db
     .select()
     .from(books)
@@ -87,8 +99,6 @@ const page = async () => {
           <div className="flex flex-col gap-4 h-full">
             {/* Borrow Requests */}
             <Card className="p-4 flex-1 relative !shadow-none">
-              {/* gradient Overlay 
-              <div className="absolute bottom-0 left-0 w-full h-25 bg-gradient-to-t from-light-300 via-light-300 to-transparent opacity-70 pointer-events-none z-10" /> */}
               <div className="flex items-center justify-between">
                 <h2 className="text-dark-400 text-xl font-semibold">
                   Borrow Requests
@@ -98,53 +108,66 @@ const page = async () => {
                 </Button>
               </div>
               <div className="flex flex-col gap-4 mt-4">
-                {borrowRequests.map((record) => (
-                  <Link
-                    key={record.bookId}
-                    href={`admin/books/${record.bookId}`}
-                    className="flex w-full gap-4 items-center p-3 rounded-lg bg-light-300"
-                  >
-                    <BookCover
-                      coverColor={record.coverColor || "#FFFFFF"}
-                      coverImage={record.coverUrl || ""}
-                      variant={"small"}
-                    />
-                    <div className="flex flex-col md:items-center md:flex-row md:justify-between w-full">
-                      <div className="flex flex-col gap-1">
-                        <p className="font-semibold text-[16px] text-dark-400">
-                          {truncateText(record.title || "", 30)}
-                        </p>
-                        <p className="text-light-900 text-sm">
-                          By{" "}
-                          {(record.author
-                            ? record.author.split(" ").slice(0, 2).join(" ")
-                            : "") || ""}{" "}
-                          ▪ {record.genre}
-                        </p>
-                        <div className="text-dark-200 text-xs flex gap-2 ">
-                          <p className="flex gap-2">
-                            {record.fullName} <span>▪</span>
+                {borrowRequests.length > 0 ? (
+                  borrowRequests.map((record) => (
+                    <Link
+                      key={record.bookId}
+                      href={`admin/books/${record.bookId}`}
+                      className="flex w-full gap-4 items-center p-3 rounded-lg bg-light-300"
+                    >
+                      <BookCover
+                        coverColor={record.coverColor || "#FFFFFF"}
+                        coverImage={record.coverUrl || ""}
+                        variant={"small"}
+                      />
+                      <div className="flex flex-col md:items-center md:flex-row md:justify-between w-full">
+                        <div className="flex flex-col gap-1">
+                          <p className="font-semibold text-[16px] text-dark-400">
+                            {truncateText(record.title || "", 30)}
                           </p>
-                          <div className="flex items-center gap-2">
-                            <Image
-                              src={"/icons/admin/calendar.svg"}
-                              width={16}
-                              height={16}
-                              alt="calendar"
-                            />{" "}
-                            {record.borrowDate
-                              ? record.borrowDate.toLocaleDateString("en-GB", {
-                                  day: "2-digit",
-                                  month: "2-digit",
-                                  year: "2-digit",
-                                })
-                              : "N/A"}
+                          <p className="text-light-900 text-sm">
+                            By{" "}
+                            {(record.author
+                              ? record.author.split(" ").slice(0, 2).join(" ")
+                              : "") || ""}{" "}
+                            ▪ {record.genre}
+                          </p>
+                          <div className="text-dark-200 text-xs flex gap-2 ">
+                            <p className="flex gap-2">
+                              {record.fullName} <span>▪</span>
+                            </p>
+                            <div className="flex items-center gap-2">
+                              <Image
+                                src={"/icons/admin/calendar.svg"}
+                                width={16}
+                                height={16}
+                                alt="calendar"
+                              />{" "}
+                              {record.borrowDate
+                                ? record.borrowDate.toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                      day: "2-digit",
+                                      month: "2-digit",
+                                      year: "2-digit",
+                                    }
+                                  )
+                                : "N/A"}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))
+                ) : (
+                  <NoPendingRequests
+                    img={"/images/no-book-request.png"}
+                    h1={"No Pending Book Requests"}
+                    p={
+                      "There are no borrow book requests awaiting your review at this time."
+                    }
+                  />
+                )}
               </div>
             </Card>
             {/* Account Requests */}
@@ -157,28 +180,38 @@ const page = async () => {
                   <Link href="/admin/account-requests">View all</Link>
                 </Button>
               </div>
-              <div className="grid grid-cols-3 gap-2">
-                {accountRequests.map((record) => (
-                  <div
-                    key={record.id}
-                    className="flex flex-col items-center gap-4 p-2 bg-light-300 rounded-lg"
-                  >
-                    <Avatar>
-                      <AvatarFallback className="bg-amber-100 p-2 px-3">
-                        {getInitials(record?.fullName || "IN")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col max-md:hidden text-center">
-                      <h1 className="font-medium text-dark-400">
-                        {record.fullName}
-                      </h1>
-                      <p className="text-sm text-light-900">
-                        {truncateText(record?.email || "", 15)}
-                      </p>
+              {accountRequests.length > 0 ? (
+                <div className="grid grid-cols-3 gap-2">
+                  {accountRequests.map((record) => (
+                    <div
+                      key={record.id}
+                      className="flex flex-col items-center gap-4 p-2 bg-light-300 rounded-lg"
+                    >
+                      <Avatar>
+                        <AvatarFallback className="bg-amber-100 p-2 px-3">
+                          {getInitials(record?.fullName || "IN")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col max-md:hidden text-center">
+                        <h1 className="font-medium text-dark-400">
+                          {record.fullName}
+                        </h1>
+                        <p className="text-sm text-light-900">
+                          {truncateText(record?.email || "", 15)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <NoPendingRequests
+                  img={"/images/no-account-request.png"}
+                  h1={"No Pending Account Requests"}
+                  p={
+                    "There are currently no account requests awaiting approval."
+                  }
+                />
+              )}
             </Card>
           </div>
         </ResizablePanel>
