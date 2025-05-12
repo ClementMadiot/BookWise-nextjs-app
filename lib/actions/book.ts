@@ -141,18 +141,25 @@ export const deleteBook = async (bookId: string) => {
 
 // BORROW BOOKS
 
-export const updateStatusBorrow = async (id: string, status: string) => {
+export const updateStatusBorrow = async (
+  id: string,
+  status: string,
+  returnedDate?: string | null
+) => {
   try {
     await db
-    .update(borrowRecords)
-    .set({ status: status as "BORROWED" | "RETURNED" })
-    .where(eq(borrowRecords.id, id));
+      .update(borrowRecords)
+      .set({
+        status: status as "BORROWED" | "RETURNED",
+        returnDate: returnedDate,
+      })
+      .where(eq(borrowRecords.id, id));
     return { success: true };
   } catch (error) {
     console.error("Error updating borrow status:", error);
     return { success: false, error: "Failed to update borrow status" };
   }
-}
+};
 
 // Count how many books a user has borrowed
 export const countUserBorrowedBooks = async (userId: string) => {

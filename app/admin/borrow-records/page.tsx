@@ -43,7 +43,7 @@ const page = async () => {
     ...record,
     borrowDate: record.borrowDate ? new Date(record.borrowDate) : null,
     dueDate: record.dueDate ? new Date(record.dueDate) : null,
-    returnDate: record.returnDate ? new Date(record.returnDate) : new Date(),
+    returnDate: record.returnDate ? new Date(record.returnDate) : null,
   })) as BorrowRecord[];
   return (
     <section className="w-full rounded-2xl bg-white p-4">
@@ -62,7 +62,8 @@ const page = async () => {
                   variant={"extraSmall"}
                 />
                 <h1 className="text-sm font-semibold">
-                  {truncateText(record.title, 20)}</h1>
+                  {truncateText(record.title, 20)}
+                </h1>
               </div>
             </TableCell>
             <TableCell className="admin-cell">
@@ -78,6 +79,7 @@ const page = async () => {
                 id={record.id}
                 role={record.status}
                 array={borrowStatuses}
+                dueDate={record.dueDate}
               />
             </TableCell>
             <TableCell className="admin-cell ">

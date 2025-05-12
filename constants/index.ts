@@ -236,12 +236,6 @@ export const userRoles = [
 
 export const borrowStatuses = [
   {
-    value: "overdue",
-    label: "Overdue",
-    bgcoverColor: "bg-[#FFF1F3]",
-    textcoverColor: "text-[#C01048]",
-  },
-  {
     value: "borrowed",
     label: "Borrowed",
     bgcoverColor: "bg-[#F9F5FF]",

@@ -129,7 +129,7 @@ const BookCard = ({
                       day: "2-digit",
                     })}`
                   : daysLeft !== null && daysLeft <= 0
-                  ? "Overdue Return"
+                  ? "Late Return"
                   : daysLeft !== null
                   ? `${daysLeft} day${daysLeft === 1 ? "" : "s"} left to due`
                   : "N/A"}

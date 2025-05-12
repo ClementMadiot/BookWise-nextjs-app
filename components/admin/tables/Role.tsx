@@ -14,10 +14,10 @@ import { toast } from "sonner";
 import { updateUserRole } from "@/lib/admin/action/user";
 import { updateStatusBorrow } from "@/lib/actions/book";
 
-
 interface RoleProps {
   id: string;
   role: string;
+  dueDate?: Date;
   array?: {
     value: string;
     label: string;
@@ -27,7 +27,7 @@ interface RoleProps {
   onRoleChange?: (newRole: string) => void;
 }
 
-const Role = ({ id, role, array }: RoleProps) => {
+const Role = ({ id, role, array, dueDate }: RoleProps) => {
   const [position, setPosition] = React.useState(role);
 
   // Dynamically set the default value based on the role prop
@@ -38,6 +38,7 @@ const Role = ({ id, role, array }: RoleProps) => {
   const handleRoleChange = async (newRole: string) => {
     setPosition(newRole); // Update the local state immediately
     console.log("Role changed to:", newRole); // Debugging log
+
     if (newRole === "admin" || newRole === "user") {
       try {
         const result = await updateUserRole(id, newRole.toUpperCase());
@@ -50,19 +51,26 @@ const Role = ({ id, role, array }: RoleProps) => {
       } catch (error) {
         console.error("Error updating user role:", error);
         toast.error("Failed to update user role");
-        // Revert the local state change if the API call fails
-        setPosition(role);
+        setPosition(role); // Revert the local state change if the API call fails
       }
     }
+
     if (
-      newRole === "overdue" ||
       newRole === "borrowed" ||
       newRole === "returned"
     ) {
       try {
         const result = await updateStatusBorrow(id, newRole.toUpperCase());
-        console.log(id);
-        
+
+        if (newRole === "returned") {
+          // Update the returned_date in the database
+          await updateStatusBorrow(
+            id,
+            newRole.toUpperCase(),
+            new Date().toISOString()
+          );
+        }
+
         if (result.success) {
           toast.success("Book status updated successfully");
         } else {
@@ -72,8 +80,7 @@ const Role = ({ id, role, array }: RoleProps) => {
       } catch (error) {
         console.error("Error updating book status:", error);
         toast.error("Failed to update book status");
-        // Revert the local state change if the API call fails
-        setPosition(role);
+        setPosition(role); // Revert the local state change if the API call fails
       }
     }
   };
