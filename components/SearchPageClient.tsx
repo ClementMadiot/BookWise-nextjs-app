@@ -1,14 +1,10 @@
 "use client";
-
-import { db } from "@/database/drizzle";
-import { books } from "@/database/schema";
 import React, { useState } from "react";
-import SearchBar from "./SearchBar";
+
 import BookList from "./BookList";
+import SearchBar from "./SearchBar";
 
-
-const Search = async () => {
-  const searchBooks = await db.select().from(books).limit(10);
+const SearchPageClient = ({ books }: { books: any[] }) => {
   const [showBookList, setShowBookList] = useState(true);
 
   return (
@@ -23,17 +19,16 @@ const Search = async () => {
         </h1>
         <SearchBar setShowBookList={setShowBookList} />
       </article>
-      {/* book not found */}
       {showBookList && (
         <BookList
           title="Search Results"
           containerClassName="mt-28"
           titleClassName="font-semibold text-2xl lg:text-3xl text-light-100 font-ibm-plex-sans"
-          books={searchBooks.slice(1)}
+          books={books.slice(1)}
         />
       )}
     </>
   );
 };
 
-export default Search;
+export default SearchPageClient;

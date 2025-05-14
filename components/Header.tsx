@@ -32,8 +32,19 @@ const Header = ({ session, admin }: { session: Session; admin: string }) => {
             Home
           </Link>
         </li>
+        <li>
+          <Link
+            href={"/search"}
+            className={cn(
+              "text-light-100 hover:text-light-200",
+              pathname === "/search" ? "text-light-200" : ""
+            )}
+          >
+            Search
+          </Link>
+        </li>
         {admin === "ADMIN" && (
-          <li className={cn(pathname === "/" ? "hidden" : "")}>
+          <li className={cn(pathname !== "/my-profile" ? "hidden" : "")}>
             <Link
               href={"/admin"}
               className="text-light-100 hover:text-light-200"

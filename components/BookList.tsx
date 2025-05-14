@@ -7,14 +7,15 @@ interface Props {
   books: Book[]
   containerClassName?: string;
   listBookClassName?: string;
+  titleClassName?: string;
   userId?: string;
 }
 
-const BookList = ({ title, books, containerClassName, listBookClassName, userId }: Props) => {
+const BookList = ({ title, books, containerClassName, listBookClassName, userId, titleClassName }: Props) => {
   if (books.length < 1) return null; 
   return (
     <section className={containerClassName}>
-      <h2 className="font-bebas-neue text-4xl text-light-100">{title}</h2>
+      <h2 className={`font-bebas-neue text-4xl text-light-100 ${titleClassName}`}>{title}</h2>
 
       <ul className={`book-list w-full ${listBookClassName}`}>
         {books.map((book) => (
